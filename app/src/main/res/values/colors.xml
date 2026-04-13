@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- RPG Theme Colors -->
+    <color name="gold_primary">#FFD700</color>
+    <color name="gold_dark">#B8860B</color>
+    <color name="deep_blue">#1A237E</color>
+    <color name="deep_blue_dark">#0D47A1</color>
+    <color name="crimson_accent">#B71C1C</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray_bg">#F5F5F5</color>
+</resources>

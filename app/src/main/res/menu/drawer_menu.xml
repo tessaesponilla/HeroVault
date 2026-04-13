@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_achievements"
+            android:icon="@drawable/ic_crown"
+            android:title="Overall Achievements" />
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_star"
+            android:title="Switch Hero" />
+
+        <item
+            android:id="@+id/nav_overall_loot"
+            android:icon="@drawable/ic_vault"
+            android:title="Overall Hero Loot Items" />
+
+        <item
+            android:id="@+id/nav_loot"
+            android:icon="@drawable/ic_vault"
+            android:title="Current Hero Loot Items" />
+
+    </group>
+
+    <item android:title="System">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_person"
+                android:title="About" />
+            <item
+                android:id="@+id/nav_reset"
+                android:icon="@drawable/ic_shield"
+                android:title="Reset All Progress" />
+        </menu>
+    </item>
+
+</menu>

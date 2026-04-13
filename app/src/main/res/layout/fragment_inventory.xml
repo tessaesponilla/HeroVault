@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zen Vault"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp"
+        android:textColor="?attr/colorOnSurface" />
+
+    <TextView
+        android:id="@+id/vaultStatusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Complete 3 quests to unlock loot!"
+        android:textSize="14sp"
+        android:textColor="#888"
+        android:layout_marginBottom="16dp" />
+
+    <GridLayout
+        android:id="@+id/lootGrid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="3"
+        android:useDefaultMargins="true">
+
+        <!-- Slot 1 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/lootItem1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="6dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="3dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="12dp">
+                <TextView android:id="@+id/lootIcon1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="32sp" />
+                <TextView android:id="@+id/lootName1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp" android:gravity="center" />
+                <TextView android:id="@+id/lootLabel1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textColor="#4CAF50" android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Slot 2 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/lootItem2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="6dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="3dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="12dp">
+                <TextView android:id="@+id/lootIcon2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="32sp" />
+                <TextView android:id="@+id/lootName2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp" android:gravity="center" />
+                <TextView android:id="@+id/lootLabel2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textColor="#4CAF50" android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Slot 3 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/lootItem3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="6dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="3dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="12dp">
+                <TextView android:id="@+id/lootIcon3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="32sp" />
+                <TextView android:id="@+id/lootName3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp" android:gravity="center" />
+                <TextView android:id="@+id/lootLabel3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textColor="#4CAF50" android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Slot 4 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/lootItem4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="6dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="3dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="12dp">
+                <TextView android:id="@+id/lootIcon4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="32sp" />
+                <TextView android:id="@+id/lootName4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp" android:gravity="center" />
+                <TextView android:id="@+id/lootLabel4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textColor="#4CAF50" android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Slot 5 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/lootItem5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="6dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="3dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="12dp">
+                <TextView android:id="@+id/lootIcon5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="32sp" />
+                <TextView android:id="@+id/lootName5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp" android:gravity="center" />
+                <TextView android:id="@+id/lootLabel5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textColor="#4CAF50" android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Slot 6 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/lootItem6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="6dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="3dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="12dp">
+                <TextView android:id="@+id/lootIcon6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="32sp" />
+                <TextView android:id="@+id/lootName6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp" android:gravity="center" />
+                <TextView android:id="@+id/lootLabel6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textColor="#4CAF50" android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </GridLayout>
+</LinearLayout>
