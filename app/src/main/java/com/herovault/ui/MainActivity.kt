@@ -27,7 +27,13 @@ class MainActivity : AppCompatActivity() {
         setupDrawer()
         
         if (savedInstanceState == null) {
-            showFragment(HeroListFragment())
+            // Professor's Suggestion: Show Onboarding/Psych Form first if not completed
+            if (!viewModel.isOnboardingCompleted()) {
+                showFragment(OnboardingFragment())
+            } else if (viewModel.selectedHero.value == null) {
+                showFragment(HeroListFragment())
+            }
+            // If hero is already selected, observeHeroSelection() will handle the Detail fragment
         }
 
         observeHeroSelection()
@@ -67,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                         .setPositiveButton("Yes") { _, _ ->
                             viewModel.resetAllProgress()
                             supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                            showFragment(HeroListFragment())
+                            showFragment(OnboardingFragment())
                         }
                         .setNegativeButton("No", null)
                         .show()
@@ -85,7 +91,8 @@ class MainActivity : AppCompatActivity() {
                              currentFragment is LootFragment || 
                              currentFragment is OverallLootFragment ||
                              currentFragment is AchievementsFragment ||
-                             currentFragment is AboutFragment
+                             currentFragment is AboutFragment ||
+                             currentFragment is OnboardingFragment
         
         if (!shouldShowBack && currentFragment != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(false)
@@ -107,8 +114,14 @@ class MainActivity : AppCompatActivity() {
         viewModel.selectedHero.observe(this) { hero ->
             if (hero != null) {
                 val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+                // If we select a hero (e.g. from the quiz or list), move to Detail
                 if (currentFragment !is HeroDetailFragment) {
-                    showFragment(HeroDetailFragment(), true)
+                    // Use a clean transaction (don't add onboarding to backstack if we just finished it)
+                    if (currentFragment is OnboardingFragment) {
+                        showFragment(HeroDetailFragment(), false)
+                    } else {
+                        showFragment(HeroDetailFragment(), true)
+                    }
                 }
                 supportActionBar?.title = "${hero.name} — Lv.${hero.level}"
             } else {

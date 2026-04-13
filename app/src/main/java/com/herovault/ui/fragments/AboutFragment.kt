@@ -20,6 +20,28 @@ class AboutFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Professional UI: Animate sections to fade and slide in one after another
+        animateEntrance()
+    }
+
+    private fun animateEntrance() {
+        val container = binding.mainContainer
+        for (i in 0 until container.childCount) {
+            val child = container.getChildAt(i)
+            child.alpha = 0f
+            child.translationY = 48f
+            child.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(500)
+                .setStartDelay(i * 120L)
+                .start()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

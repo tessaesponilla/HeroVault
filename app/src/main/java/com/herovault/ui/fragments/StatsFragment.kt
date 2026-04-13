@@ -1,12 +1,16 @@
 package com.herovault.ui.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.herovault.R
 import com.herovault.databinding.FragmentStatsBinding
+import com.herovault.databinding.ItemAchievementCardBinding
 import com.herovault.viewmodel.HeroViewModel
 
 class StatsFragment : Fragment() {
@@ -26,21 +30,61 @@ class StatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Observe the hero data to update the progress bars and text
         viewModel.selectedHero.observe(viewLifecycleOwner) { hero ->
-            hero?.let {
-                binding.textLevel.text = "Level ${it.level}"
+            hero?.let { h ->
+                val maxHp = viewModel.maxHp.value ?: 100
+                val maxMp = viewModel.maxMp.value ?: 100
 
-                binding.progressHp.progress = it.hp
-                binding.textHp.text = "HP: ${it.hp}/100"
+                // Update Header with Professional Title
+                binding.textLevel.text = "${h.getEvolutionTitle()} Rank"
+                
+                // Update Bars
+                binding.progressHp.max = maxHp
+                binding.progressHp.progress = h.hp
+                binding.textHp.text = "HP: ${h.hp}/$maxHp"
 
-                binding.progressMp.progress = it.mp
-                binding.textMp.text = "MP: ${it.mp}/100"
+                binding.progressMp.max = maxMp
+                binding.progressMp.progress = h.mp
+                binding.textMp.text = "MP: ${h.mp}/$maxMp"
 
-                binding.progressXp.progress = it.xp
-                binding.progressXp.max = it.level * 100
-                binding.textXp.text = "XP: ${it.xp}/${it.level * 100}"
+                binding.progressXp.progress = h.xp
+                binding.progressXp.max = h.level * 100
+                binding.textXp.text = "XP: ${h.xp}/${h.level * 100}"
+
+                // Update Skills Section
+                updateSkills(h)
             }
+        }
+    }
+
+    private fun updateSkills(hero: com.herovault.model.Hero) {
+        binding.skillsContainer.removeAllViews()
+
+        for (skill in hero.skills) {
+            val isUnlocked = hero.level >= skill.unlockedAtLevel
+            val card = ItemAchievementCardBinding.inflate(layoutInflater, binding.skillsContainer, false)
+            
+            card.achievementTitle.text = skill.name
+            card.achievementDescription.text = skill.description
+            card.achievementIcon.text = skill.icon
+            
+            if (isUnlocked) {
+                card.achievementStatusIcon.setImageResource(R.drawable.ic_star)
+                card.achievementStatusIcon.setColorFilter(Color.parseColor("#FFD700"))
+            } else {
+                card.achievementTitle.text = "🔒 ${skill.name} (Lv.${skill.unlockedAtLevel})"
+                card.root.alpha = 0.5f
+            }
+            
+            binding.skillsContainer.addView(card.root)
+        }
+
+        if (hero.skills.isEmpty()) {
+            val emptyTv = TextView(requireContext()).apply {
+                text = "No skills discovered yet."
+                setPadding(0, 16, 0, 0)
+            }
+            binding.skillsContainer.addView(emptyTv)
         }
     }
 

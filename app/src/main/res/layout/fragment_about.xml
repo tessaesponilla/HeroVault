@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray_bg">
 
     <LinearLayout
+        android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- App Branding Section -->
+        <!-- App Branding -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:cardCornerRadius="16dp"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
             app:strokeWidth="1dp"
             app:strokeColor="#E0E0E0">
@@ -39,65 +41,35 @@
                     android:layout_height="wrap_content"
                     android:text="HeroVault"
                     android:textColor="@color/deep_blue"
-                    android:textSize="28sp"
+                    android:textSize="32sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Version 1.0.0"
+                    android:text="The Health Companion | v1.0.0"
                     android:textColor="#757575"
                     android:textSize="14sp" />
-
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Mission Section -->
+        <!-- The Heroic Pillars -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="8dp"
-            android:text="Our Mission"
+            android:text="The Three Pillars of Heroism"
             android:textAllCaps="true"
             android:textColor="@color/deep_blue"
             android:textSize="12sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="8dp"
             android:textStyle="bold" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="4dp"
-                android:padding="16dp"
-                android:text="HeroVault is a gamified experience designed to transform ordinary tasks into epic adventures. We aim to empower users by building mental focus and physical resilience through a structured system of heroic pillars."
-                android:textColor="#424242"
-                android:textSize="15sp" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Team Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="8dp"
-            android:text="Development Team"
-            android:textAllCaps="true"
-            android:textColor="@color/deep_blue"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:cardCornerRadius="12dp"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="2dp">
 
             <LinearLayout
@@ -109,73 +81,95 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Developed by the Core Trio:"
-                    android:textColor="#757575"
-                    android:textSize="13sp" />
+                    android:text="🛡️ Physical Resilience\nRepresented by The Guardian, focusing on the strength of the body as the anchor for the mind."
+                    android:textSize="14sp"
+                    android:layout_marginBottom="12dp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Blossom, Bubbles, and Buttercup"
-                    android:textColor="@color/deep_blue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:text="🧩 Mental Focus\nRepresented by The Sage, focusing on cognitive discipline and clarity in a chaotic world."
+                    android:textSize="14sp"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="💖 Emotional Health\nRepresented by The Empath, focusing on connection, empathy, and internal emotional regulation."
+                    android:textSize="14sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Credits Section -->
+        <!-- Artistic Credits -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="8dp"
             android:text="Artistic Credits"
             android:textAllCaps="true"
             android:textColor="@color/deep_blue"
             android:textSize="12sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="8dp"
             android:textStyle="bold" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Portrait Art"
-                    android:textColor="@color/deep_blue"
-                    android:textSize="15sp"
+                    android:text="Hero Portraits &amp; UI Assets"
                     android:textStyle="bold" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="A very special thank you to craftpix.net for providing the free hero avatars that bring this vault to life."
-                    android:textColor="#424242"
-                    android:textSize="14sp" />
+                    android:text="A special attribution to craftpix.net for the free character avatars and professional RPG UI elements used throughout the application." />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Footer -->
+        <!-- Technical Ledger -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Technical Ledger"
+            android:textAllCaps="true"
+            android:textColor="@color/deep_blue"
+            android:textSize="12sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:cardCornerRadius="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="• Language: Kotlin\n• Architecture: MVVM (Jetpack)\n• UI: Material Design 3\n• Navigation: Navigation Component"
+                android:textSize="13sp"
+                android:textColor="#616161" />
+        </com.google.android.material.card.MaterialCardView>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="© 2024 HeroVault "
-            android:textColor="#BDBDBD"
-            android:textSize="12sp" />
+            android:text="Designed for growth. Built for heroes."
+            android:textColor="@color/deep_blue"
+            android:textStyle="italic" />
 
     </LinearLayout>
 </ScrollView>

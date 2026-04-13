@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🩺 Health Discovery"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/deep_blue"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Answer these questions to find your Hero Companion."
+            android:textSize="16sp"
+            android:textColor="#666"
+            android:gravity="center"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Question 1 -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1. How would you describe your physical energy levels lately?"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp" />
+                <RadioGroup
+                    android:id="@+id/rgPhysical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton android:id="@+id/rbPhy1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I feel strong and ready for action." />
+                    <RadioButton android:id="@+id/rbPhy2" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I feel a bit tired and need more movement." />
+                    <RadioButton android:id="@+id/rbPhy3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I am constantly exhausted and drained." />
+                </RadioGroup>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Question 2 -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2. How often do you find it difficult to concentrate on one task?"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp" />
+                <RadioGroup
+                    android:id="@+id/rgMental"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton android:id="@+id/rbMen1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Rarely, I am very focused." />
+                    <RadioButton android:id="@+id/rbMen2" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Sometimes, my mind wanders." />
+                    <RadioButton android:id="@+id/rbMen3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Often, I struggle to finish anything." />
+                </RadioGroup>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Question 3 -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3. In stressful situations, how do you usually react?"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp" />
+                <RadioGroup
+                    android:id="@+id/rgEmotional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton android:id="@+id/rbEmo1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I stay calm and collected." />
+                    <RadioButton android:id="@+id/rbEmo2" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I get anxious but eventually manage." />
+                    <RadioButton android:id="@+id/rbEmo3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I feel overwhelmed and emotional." />
+                </RadioGroup>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/btnDiscover"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="Discover My Hero"
+            android:textSize="18sp"
+            app:cornerRadius="32dp"
+            android:layout_marginBottom="48dp" />
+
+    </LinearLayout>
+</ScrollView>

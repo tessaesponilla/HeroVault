@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -30,26 +31,40 @@ class OverallLootFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.lootRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-        // Set title for overall loot
-        // binding.textView.text = "Overall Loot Items"
-
         updateOverallLootList()
     }
 
     private fun updateOverallLootList() {
         val claimedItems = mutableListOf<LootCollectionItem>()
-        
+
         // Loop through ALL heroes and their loot tables
         for (hero in viewModel.heroList) {
             for (loot in hero.lootTable) {
                 val count = viewModel.getAchievementCount(loot.id)
                 if (count > 0) {
-                    claimedItems.add(LootCollectionItem(loot.icon, loot.name, count))
+                    claimedItems.add(
+                        LootCollectionItem(
+                            id = loot.id,
+                            icon = loot.icon,
+                            name = loot.name,
+                            count = count,
+                            isEquipped = false
+                        )
+                    )
                 }
             }
         }
 
-        binding.lootRecyclerView.adapter = LootCollectionAdapter(claimedItems)
+        binding.lootRecyclerView.adapter = LootCollectionAdapter(
+            items = claimedItems,
+            onItemClick = { item ->
+                Toast.makeText(requireContext(), "${item.name} (x${item.count})", Toast.LENGTH_SHORT).show()
+                // You can add more functionality here like:
+                // - Show item details dialog
+                // - Equip/unequip item
+                // - Navigate to item detail fragment
+            }
+        )
     }
 
     override fun onDestroyView() {

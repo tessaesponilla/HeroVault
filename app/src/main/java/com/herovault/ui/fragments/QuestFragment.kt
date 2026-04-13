@@ -7,17 +7,37 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import android.widget.ImageView
+import android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.herovault.R
 import com.herovault.model.Quest
+import com.herovault.ui.SoundManager
 import com.herovault.viewmodel.HeroViewModel
 
 class QuestFragment : Fragment() {
 
     private val viewModel: HeroViewModel by activityViewModels()
     private lateinit var resetTimerText: TextView
+    private var soundManager: SoundManager? = null
+    
+    private var pendingQuest: Quest? = null
+
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            pendingQuest?.let { quest ->
+                soundManager?.playLootClaimed()
+                viewModel.completeQuest(quest.id, quest.hpGain, quest.mpGain, quest.xpGain, uri.toString())
+                Toast.makeText(context, "Proof accepted! Quest Completed.", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(context, "Evidence is required to validate the quest.", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +51,7 @@ class QuestFragment : Fragment() {
             setPadding(48, 48, 48, 48)
         }
 
-        val container = LinearLayout(requireContext()).apply {
+        val linearContainer = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -39,47 +59,47 @@ class QuestFragment : Fragment() {
             )
         }
 
-        rootContainer.addView(container)
+        rootContainer.addView(linearContainer)
 
-        // Reset Timer Header
         resetTimerText = TextView(requireContext()).apply {
             textSize = 14f
             setTextColor(android.graphics.Color.GRAY)
             setPadding(0, 0, 0, 16)
         }
-        container.addView(resetTimerText)
+        linearContainer.addView(resetTimerText)
 
         viewModel.minutesRemaining.observe(viewLifecycleOwner) { minutes ->
             resetTimerText.text = "⏳ Quests reset in $minutes minutes"
         }
 
-        // Observe hero changes and rebuild quest cards dynamically
         viewModel.selectedHero.observe(viewLifecycleOwner) { hero ->
-            hero?.let { selectedHero ->
-                // Clear existing quest cards (keep the timer)
-                val viewsToRemove = mutableListOf<View>()
-                for (i in 1 until container.childCount) {
-                    viewsToRemove.add(container.getChildAt(i))
-                }
-                viewsToRemove.forEach { container.removeView(it) }
+            val viewsToRemove = mutableListOf<View>()
+            for (i in 1 until linearContainer.childCount) {
+                viewsToRemove.add(linearContainer.getChildAt(i))
+            }
+            viewsToRemove.forEach { linearContainer.removeView(it) }
 
-                // Header
+            hero?.let { selectedHero ->
                 val header = TextView(requireContext()).apply {
-                    text = "Quest Log — ${selectedHero.className}"
+                    text = "📜 Quest Log — ${selectedHero.className}"
                     textSize = 20f
                     setTypeface(null, android.graphics.Typeface.BOLD)
                     setPadding(0, 0, 0, 40)
                 }
-                container.addView(header)
+                linearContainer.addView(header)
 
-                // Build a card for each quest
                 selectedHero.quests.forEach { quest ->
-                    container.addView(buildQuestCard(quest))
+                    linearContainer.addView(buildQuestCard(quest))
                 }
             }
         }
 
         return rootContainer
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        soundManager = SoundManager(requireContext())
     }
 
     private fun buildQuestCard(quest: Quest): CardView {
@@ -121,13 +141,36 @@ class QuestFragment : Fragment() {
 
         val isDone = viewModel.isQuestCompleted(quest.id)
 
+        if (isDone) {
+            val evidenceUri = viewModel.getQuestEvidence(quest.id)
+            if (evidenceUri != null) {
+                val thumbnail = ImageView(context).apply {
+                    layoutParams = LinearLayout.LayoutParams(250, 250).apply {
+                        topMargin = 16
+                        bottomMargin = 16
+                        gravity = android.view.Gravity.CENTER_HORIZONTAL
+                    }
+                    scaleType = ImageView.ScaleType.CENTER_CROP
+                    setImageURI(Uri.parse(evidenceUri))
+                    clipToOutline = true
+                    // Use a placeholder background/border
+                    setBackgroundResource(R.drawable.border_bronze)
+                }
+                inner.addView(thumbnail)
+            }
+        }
+
         val button = Button(context).apply {
-            text = if (isDone) "Completed!" else "Complete Quest"
+            text = if (isDone) "✅ Proof Submitted" else "Upload Proof & Complete"
             isEnabled = !isDone
             setOnClickListener {
-                viewModel.completeQuest(quest.id, quest.hpGain, quest.mpGain, quest.xpGain)
-                isEnabled = false
-                text = "Completed!"
+                soundManager?.playClick()
+                if (quest.requiresImage) {
+                    pendingQuest = quest
+                    pickImageLauncher.launch("image/*")
+                } else {
+                    viewModel.completeQuest(quest.id, quest.hpGain, quest.mpGain, quest.xpGain)
+                }
             }
         }
 
@@ -138,5 +181,11 @@ class QuestFragment : Fragment() {
         card.addView(inner)
 
         return card
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Clear observer references
+        soundManager = null
     }
 }

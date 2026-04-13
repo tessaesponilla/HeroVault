@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -40,15 +41,28 @@ class LootFragment : Fragment() {
 
     private fun updateLootList(hero: com.herovault.model.Hero) {
         val claimedItems = mutableListOf<LootCollectionItem>()
-        
+
         for (loot in hero.lootTable) {
             val count = viewModel.getAchievementCount(loot.id)
             if (count > 0) {
-                claimedItems.add(LootCollectionItem(loot.icon, loot.name, count))
+                val isEquipped = hero.equippedLootIds.contains(loot.id)
+                claimedItems.add(
+                    LootCollectionItem(
+                        id = loot.id,
+                        icon = loot.icon,
+                        name = loot.name,
+                        count = count,
+                        isEquipped = isEquipped
+                    )
+                )
             }
         }
 
-        binding.lootRecyclerView.adapter = LootCollectionAdapter(claimedItems)
+        binding.lootRecyclerView.adapter = LootCollectionAdapter(claimedItems) { item ->
+            viewModel.equipItem(item.id)
+            val msg = if (item.isEquipped) "Unequipped ${item.name}" else "Equipped ${item.name}!"
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroyView() {
