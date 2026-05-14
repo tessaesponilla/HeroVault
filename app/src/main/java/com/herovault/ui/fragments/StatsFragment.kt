@@ -35,18 +35,21 @@ class StatsFragment : Fragment() {
                 val maxHp = viewModel.maxHp.value ?: 100
                 val maxMp = viewModel.maxMp.value ?: 100
 
-                // Update Header with Professional Title
-                binding.textLevel.text = "${h.getEvolutionTitle()} Rank"
-                
-                // Update Bars
+                // Update Rank and Level (separate now)
+                binding.textRank.text = h.getEvolutionTitle()  // "Novice", "Adept", etc.
+                binding.textLevelNumber.text = "${h.level}"    // "1", "2", "3", etc.
+
+                // Update HP Bar
                 binding.progressHp.max = maxHp
                 binding.progressHp.progress = h.hp
                 binding.textHp.text = "HP: ${h.hp}/$maxHp"
 
+                // Update MP Bar
                 binding.progressMp.max = maxMp
                 binding.progressMp.progress = h.mp
                 binding.textMp.text = "MP: ${h.mp}/$maxMp"
 
+                // Update XP Bar
                 binding.progressXp.progress = h.xp
                 binding.progressXp.max = h.level * 100
                 binding.textXp.text = "XP: ${h.xp}/${h.level * 100}"
@@ -63,11 +66,11 @@ class StatsFragment : Fragment() {
         for (skill in hero.skills) {
             val isUnlocked = hero.level >= skill.unlockedAtLevel
             val card = ItemAchievementCardBinding.inflate(layoutInflater, binding.skillsContainer, false)
-            
+
             card.achievementTitle.text = skill.name
             card.achievementDescription.text = skill.description
             card.achievementIcon.text = skill.icon
-            
+
             if (isUnlocked) {
                 card.achievementStatusIcon.setImageResource(R.drawable.ic_star)
                 card.achievementStatusIcon.setColorFilter(Color.parseColor("#FFD700"))
@@ -75,7 +78,7 @@ class StatsFragment : Fragment() {
                 card.achievementTitle.text = "🔒 ${skill.name} (Lv.${skill.unlockedAtLevel})"
                 card.root.alpha = 0.5f
             }
-            
+
             binding.skillsContainer.addView(card.root)
         }
 

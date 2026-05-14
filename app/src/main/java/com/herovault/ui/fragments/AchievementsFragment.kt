@@ -1,9 +1,11 @@
 package com.herovault.ui.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.herovault.R
@@ -28,80 +30,251 @@ class AchievementsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.selectedHero.observe(viewLifecycleOwner) {
-            updateAchievements()
+        viewModel.selectedHero.observe(viewLifecycleOwner) { hero ->
+            if (hero != null) {
+                // Update header
+                binding.textHeroName.text = hero.name
+                binding.textHeroRank.text = hero.getEvolutionTitle()
+                binding.imageHeroPortrait.setImageResource(hero.portraitRes)
+
+                // Show achievements for current hero only
+                updateAchievements(hero)
+            } else {
+                binding.textHeroName.text = "No Hero Selected"
+                binding.textHeroRank.text = "Complete onboarding first"
+                binding.achievementsContainer.removeAllViews()
+                val emptyView = TextView(requireContext()).apply {
+                    text = "No hero discovered yet."
+                    textSize = 14f
+                    setTextColor(Color.GRAY)
+                    gravity = android.view.Gravity.CENTER
+                    setPadding(0, 32, 0, 32)
+                }
+                binding.achievementsContainer.addView(emptyView)
+            }
         }
     }
 
-    private fun updateAchievements() {
-        binding.achievementContainer.removeAllViews()
+    private fun updateAchievements(hero: com.herovault.model.Hero) {
+        binding.achievementsContainer.removeAllViews()
 
-        // --- 1. Hero Levels Section ---
-        addSectionHeader("Hero Ranks")
-        for (hero in viewModel.heroList) {
-            val level = viewModel.getHeroLevel(hero.id)
-            addHeroLevelStat(hero.name, level)
+        // Get data for current hero
+        val completedQuests = hero.quests.filter { viewModel.isQuestCompleted(it.id) }
+        val claimedLoot = hero.lootTable.filter { viewModel.isLootClaimed(it.id) }
+        val completedQuestsCount = completedQuests.size
+        val claimedLootCount = claimedLoot.size
+
+        // ===== RANK ACHIEVEMENTS (Based on Level) =====
+        addSectionHeader("🏆 Rank Achievements")
+
+        // Novice - Level 1 (always unlocked)
+        addAchievementCard(
+            title = "Novice",
+            description = "Reach Level 1",
+            icon = "🌟",
+            isUnlocked = hero.level >= 1,
+            requirement = 1,
+            currentValue = hero.level
+        )
+
+        // Intermediate - Level 5
+        addAchievementCard(
+            title = "Intermediate",
+            description = "Reach Level 5",
+            icon = "⭐",
+            isUnlocked = hero.level >= 5,
+            requirement = 5,
+            currentValue = hero.level
+        )
+
+        // Advanced - Level 10
+        addAchievementCard(
+            title = "Advanced",
+            description = "Reach Level 10",
+            icon = "💫",
+            isUnlocked = hero.level >= 10,
+            requirement = 10,
+            currentValue = hero.level
+        )
+
+        // Adept - Level 15
+        addAchievementCard(
+            title = "Adept",
+            description = "Reach Level 15",
+            icon = "✨",
+            isUnlocked = hero.level >= 15,
+            requirement = 15,
+            currentValue = hero.level
+        )
+
+        // Excellent - Level 20
+        addAchievementCard(
+            title = "Excellent",
+            description = "Reach Level 20",
+            icon = "👑",
+            isUnlocked = hero.level >= 20,
+            requirement = 20,
+            currentValue = hero.level
+        )
+
+        // ===== QUEST ACHIEVEMENTS =====
+        addSectionHeader("📜 Quest Achievements")
+
+        // Quest Novice - 5 quests
+        addAchievementCard(
+            title = "Quest Novice",
+            description = "Complete 5 quests",
+            icon = "📖",
+            isUnlocked = completedQuestsCount >= 5,
+            requirement = 5,
+            currentValue = completedQuestsCount
+        )
+
+        // Quest Adept - 10 quests
+        addAchievementCard(
+            title = "Quest Adept",
+            description = "Complete 10 quests",
+            icon = "📚",
+            isUnlocked = completedQuestsCount >= 10,
+            requirement = 10,
+            currentValue = completedQuestsCount
+        )
+
+        // Quest Master - 20 quests
+        addAchievementCard(
+            title = "Quest Master",
+            description = "Complete 20 quests",
+            icon = "🏅",
+            isUnlocked = completedQuestsCount >= 20,
+            requirement = 20,
+            currentValue = completedQuestsCount
+        )
+
+        // Quest Legend - 30 quests
+        addAchievementCard(
+            title = "Quest Legend",
+            description = "Complete 30 quests",
+            icon = "🏆",
+            isUnlocked = completedQuestsCount >= 30,
+            requirement = 30,
+            currentValue = completedQuestsCount
+        )
+
+        // ===== LOOT ACHIEVEMENTS =====
+        addSectionHeader("💎 Loot Achievements")
+
+        // Loot Collector - 5 loots
+        addAchievementCard(
+            title = "Loot Collector",
+            description = "Claim 5 loot items",
+            icon = "🔑",
+            isUnlocked = claimedLootCount >= 5,
+            requirement = 5,
+            currentValue = claimedLootCount
+        )
+
+        // Loot Hoarder - 10 loots
+        addAchievementCard(
+            title = "Loot Hoarder",
+            description = "Claim 10 loot items",
+            icon = "💰",
+            isUnlocked = claimedLootCount >= 10,
+            requirement = 10,
+            currentValue = claimedLootCount
+        )
+
+        // Loot Enthusiast - 20 loots
+        addAchievementCard(
+            title = "Loot Enthusiast",
+            description = "Claim 20 loot items",
+            icon = "💎",
+            isUnlocked = claimedLootCount >= 20,
+            requirement = 20,
+            currentValue = claimedLootCount
+        )
+
+        // Loot Master - 30 loots
+        addAchievementCard(
+            title = "Loot Master",
+            description = "Claim 30 loot items",
+            icon = "👑",
+            isUnlocked = claimedLootCount >= 30,
+            requirement = 30,
+            currentValue = claimedLootCount
+        )
+
+        // Loot Legend - 40 loots
+        addAchievementCard(
+            title = "Loot Legend",
+            description = "Claim 40 loot items",
+            icon = "🏆",
+            isUnlocked = claimedLootCount >= 40,
+            requirement = 40,
+            currentValue = claimedLootCount
+        )
+
+        // ===== Completed Quests Section (Actual earned) =====
+        if (completedQuests.isNotEmpty()) {
+            addSectionHeader("✓ Completed Quests")
+            completedQuests.forEach { quest ->
+                val card = ItemAchievementCardBinding.inflate(layoutInflater, binding.achievementsContainer, false)
+                card.achievementTitle.text = quest.title
+                card.achievementDescription.text = quest.description
+                card.achievementIcon.text = "✓"
+                card.achievementStatusIcon.setImageResource(R.drawable.ic_star)
+                card.achievementStatusIcon.setColorFilter(Color.parseColor("#FFD700"))
+                binding.achievementsContainer.addView(card.root)
+            }
         }
 
-        // --- 2. Collection Progress Section ---
-        val totalClaimed = viewModel.getTotalLootClaimed()
-        addSectionHeader("Collection Milestones")
-        val milestones = listOf(10, 20, 40, 60, 80, 100)
-        for (target in milestones) {
-            val isAchieved = totalClaimed >= target
-            addMilestoneCard(
-                "Collector Rank $target",
-                "Claim $target items from the Vault ($totalClaimed/$target)",
-                if (isAchieved) "🎖️" else "🔒",
-                isAchieved
-            )
-        }
-
-        // --- 3. Hero Mastery Section ---
-        addSectionHeader("Hero Milestones")
-        for (hero in viewModel.heroList) {
-            val level = viewModel.getHeroLevel(hero.id)
-            val isAchieved = level >= 5
-            addMilestoneCard(
-                "Master ${hero.name}",
-                "Reach Level 5 with ${hero.name}",
-                if (isAchieved) "⭐" else "🔒",
-                isAchieved
-            )
+        // ===== Claimed Loot Section (Actual earned) =====
+        if (claimedLoot.isNotEmpty()) {
+            addSectionHeader("📦 Claimed Loot")
+            claimedLoot.forEach { loot ->
+                val card = ItemAchievementCardBinding.inflate(layoutInflater, binding.achievementsContainer, false)
+                card.achievementTitle.text = loot.name
+                card.achievementDescription.text = "${loot.icon} +${loot.hpBonus} HP / +${loot.mpBonus} MP"
+                card.achievementIcon.text = loot.icon
+                card.achievementStatusIcon.setImageResource(R.drawable.ic_star)
+                card.achievementStatusIcon.setColorFilter(Color.parseColor("#FFD700"))
+                binding.achievementsContainer.addView(card.root)
+            }
         }
     }
 
     private fun addSectionHeader(title: String) {
-        val header = android.widget.TextView(requireContext()).apply {
+        val header = TextView(requireContext()).apply {
             text = title
-            textSize = 18f
-            setPadding(0, 32, 0, 16)
-            setTextColor(android.graphics.Color.BLACK)
-            setTypeface(null, android.graphics.Typeface.BOLD)
+            textSize = 16f
+            setTypeface(typeface, android.graphics.Typeface.BOLD)
+            setTextColor(Color.parseColor("#FFD700"))
+            setPadding(16, 24, 16, 8)
         }
-        binding.achievementContainer.addView(header)
+        binding.achievementsContainer.addView(header)
     }
 
-    private fun addHeroLevelStat(heroName: String, level: Int) {
-        val card = ItemAchievementCardBinding.inflate(layoutInflater, binding.achievementContainer, false)
-        card.achievementTitle.text = heroName
-        card.achievementDescription.text = "Current Level: $level"
-        card.achievementIcon.text = "⚜️"
-        card.achievementStatusIcon.setColorFilter(android.graphics.Color.parseColor("#FFD700"))
-        binding.achievementContainer.addView(card.root)
-    }
+    private fun addAchievementCard(title: String, description: String, icon: String, isUnlocked: Boolean, requirement: Int, currentValue: Int) {
+        val card = ItemAchievementCardBinding.inflate(layoutInflater, binding.achievementsContainer, false)
 
-    private fun addMilestoneCard(title: String, desc: String, icon: String, isAchieved: Boolean) {
-        val card = ItemAchievementCardBinding.inflate(layoutInflater, binding.achievementContainer, false)
-        card.achievementTitle.text = title
-        card.achievementDescription.text = desc
-        card.achievementIcon.text = icon
-        if (isAchieved) {
-            card.achievementStatusIcon.setColorFilter(android.graphics.Color.parseColor("#FFD700"))
+        if (isUnlocked) {
+            // Unlocked achievement
+            card.achievementTitle.text = title
+            card.achievementDescription.text = description
+            card.achievementIcon.text = icon
+            card.achievementStatusIcon.setImageResource(R.drawable.ic_star)
+            card.achievementStatusIcon.setColorFilter(Color.parseColor("#FFD700"))
+            card.root.alpha = 1.0f
         } else {
+            // Locked achievement - show progress
+            card.achievementTitle.text = "🔒 $title"
+            card.achievementDescription.text = "$description ($currentValue/$requirement)"
+            card.achievementIcon.text = "❓"
+            card.achievementStatusIcon.setImageResource(android.R.drawable.ic_menu_close_clear_cancel)
+            card.achievementStatusIcon.setColorFilter(Color.GRAY)
             card.root.alpha = 0.6f
         }
-        binding.achievementContainer.addView(card.root)
+
+        binding.achievementsContainer.addView(card.root)
     }
 
     override fun onDestroyView() {

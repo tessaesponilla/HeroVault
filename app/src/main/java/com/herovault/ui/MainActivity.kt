@@ -5,6 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.herovault.R
@@ -25,26 +26,28 @@ class MainActivity : AppCompatActivity() {
 
         setupToolbar()
         setupDrawer()
-        
+        setupNavHeaderClick()
+
+        // Only show initial fragment if there's no saved state
         if (savedInstanceState == null) {
-            // Professor's Suggestion: Show Onboarding/Psych Form first if not completed
             if (!viewModel.isOnboardingCompleted()) {
                 showFragment(OnboardingFragment())
             } else if (viewModel.selectedHero.value == null) {
                 showFragment(HeroListFragment())
             }
-            // If hero is already selected, observeHeroSelection() will handle the Detail fragment
         }
 
         observeHeroSelection()
 
         supportFragmentManager.addOnBackStackChangedListener {
             updateNavIcon()
+            updateToolbarAndDrawerVisibility()
         }
     }
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
+        supportActionBar?.title = "HeroVault"
     }
 
     private fun setupDrawer() {
@@ -57,19 +60,23 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    viewModel.clearSelectedHero()
-                    supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                    showFragment(HeroListFragment())
+                R.id.nav_loot -> {
+                    if (viewModel.selectedHero.value != null) {
+                        showFragment(LootFragment(), true)
+                    }
                 }
-                R.id.nav_loot -> showFragment(LootFragment(), true)
-                R.id.nav_overall_loot -> showFragment(OverallLootFragment(), true)
-                R.id.nav_achievements -> showFragment(AchievementsFragment(), true)
-                R.id.nav_about -> showFragment(AboutFragment(), true)
+                R.id.nav_achievements -> {
+                    if (viewModel.selectedHero.value != null) {
+                        showFragment(AchievementsFragment(), true)
+                    }
+                }
+                R.id.nav_about -> {
+                    showFragment(AboutFragment(), true)
+                }
                 R.id.nav_reset -> {
                     android.app.AlertDialog.Builder(this)
                         .setTitle("Reset Progress")
-                        .setMessage("Are you sure? This will wipe all loot and levels!")
+                        .setMessage("Are you sure? This will wipe all progress for your hero!")
                         .setPositiveButton("Yes") { _, _ ->
                             viewModel.resetAllProgress()
                             supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
@@ -84,28 +91,52 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Add this new function
+    private fun setupNavHeaderClick() {
+        val headerView = binding.navView.getHeaderView(0)
+        headerView.setOnClickListener {
+            // Close drawer first
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+
+            // Delay slightly to let drawer close animation finish
+            binding.drawerLayout.postDelayed({
+                val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+                if (currentFragment !is HeroDetailFragment) {
+                    // Clear back stack and go to hero detail
+                    supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    showFragment(HeroDetailFragment())
+                }
+            }, 200)
+        }
+    }
+
+    private fun updateToolbarAndDrawerVisibility() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+
+        if (currentFragment is OnboardingFragment) {
+            supportActionBar?.hide()
+            binding.toolbar.visibility = android.view.View.GONE
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            toggle.isDrawerIndicatorEnabled = false
+        } else {
+            supportActionBar?.show()
+            binding.toolbar.visibility = android.view.View.VISIBLE
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            toggle.isDrawerIndicatorEnabled = true
+        }
+    }
+
     private fun updateNavIcon() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-        
-        val shouldShowBack = currentFragment is HeroListFragment || 
-                             currentFragment is LootFragment || 
-                             currentFragment is OverallLootFragment ||
-                             currentFragment is AchievementsFragment ||
-                             currentFragment is AboutFragment ||
-                             currentFragment is OnboardingFragment
-        
-        if (!shouldShowBack && currentFragment != null) {
-            supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            toggle.isDrawerIndicatorEnabled = true
-            binding.toolbar.setNavigationOnClickListener {
-                binding.drawerLayout.openDrawer(GravityCompat.START)
-            }
-        } else {
-            toggle.isDrawerIndicatorEnabled = false
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            binding.toolbar.setNavigationOnClickListener {
-                onBackPressed()
-            }
+
+        if (currentFragment is OnboardingFragment) {
+            return
+        }
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        toggle.isDrawerIndicatorEnabled = true
+        binding.toolbar.setNavigationOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
         }
         toggle.syncState()
     }
@@ -114,38 +145,65 @@ class MainActivity : AppCompatActivity() {
         viewModel.selectedHero.observe(this) { hero ->
             if (hero != null) {
                 val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-                // If we select a hero (e.g. from the quiz or list), move to Detail
-                if (currentFragment !is HeroDetailFragment) {
-                    // Use a clean transaction (don't add onboarding to backstack if we just finished it)
+                if (currentFragment !is HeroDetailFragment && currentFragment !is LootFragment && currentFragment !is AchievementsFragment && currentFragment !is AboutFragment) {
                     if (currentFragment is OnboardingFragment) {
                         showFragment(HeroDetailFragment(), false)
-                    } else {
+                    } else if (currentFragment !is AboutFragment) {
                         showFragment(HeroDetailFragment(), true)
                     }
                 }
-                supportActionBar?.title = "${hero.name} — Lv.${hero.level}"
+                supportActionBar?.title = "HeroVault"
+                updateNavHeader(hero)
             } else {
                 supportActionBar?.title = "HeroVault"
             }
         }
     }
 
+    private fun updateNavHeader(hero: com.herovault.model.Hero) {
+        try {
+            val headerView = binding.navView.getHeaderView(0)
+            val heroImage = headerView.findViewById<android.widget.ImageView>(R.id.nav_header_image)
+            val heroName = headerView.findViewById<android.widget.TextView>(R.id.nav_header_name)
+            val heroTitle = headerView.findViewById<android.widget.TextView>(R.id.nav_header_title)
+
+            heroImage?.setImageResource(hero.portraitRes)
+            heroName?.text = hero.name
+            heroTitle?.text = "${hero.getEvolutionTitle()} - Level ${hero.level}"
+        } catch (e: Exception) {
+            // Header views might not exist yet
+        }
+    }
+
     private fun showFragment(fragment: Fragment, addToBackStack: Boolean = false) {
         val transaction = supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
-        
+
         if (addToBackStack) {
             transaction.addToBackStack(null)
         }
-        
+
         transaction.commit()
+        supportFragmentManager.executePendingTransactions()
+        updateToolbarAndDrawerVisibility()
+        updateNavIcon()
     }
 
     override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+
+        if (currentFragment is OnboardingFragment) {
+            return
+        }
+
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            if (currentFragment is LootFragment || currentFragment is AchievementsFragment || currentFragment is AboutFragment) {
+                supportFragmentManager.popBackStack()
+            } else {
+                super.onBackPressed()
+            }
         }
     }
 }

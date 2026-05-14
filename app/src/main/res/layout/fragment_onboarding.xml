@@ -25,13 +25,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Answer these questions to find your Hero Companion."
+            android:text="Answer these 10 questions to find your Hero Companion."
             android:textSize="16sp"
             android:textColor="#666"
             android:gravity="center"
             android:layout_marginBottom="32dp" />
 
-        <!-- Question 1 -->
+        <!-- Question 1: Physical Energy -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Question 2 -->
+        <!-- Question 2: Mental Focus -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,11 +91,11 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Question 3 -->
+        <!-- Question 3: Emotional Response -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp">
             <LinearLayout
@@ -117,6 +117,216 @@
                     <RadioButton android:id="@+id/rbEmo1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I stay calm and collected." />
                     <RadioButton android:id="@+id/rbEmo2" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I get anxious but eventually manage." />
                     <RadioButton android:id="@+id/rbEmo3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I feel overwhelmed and emotional." />
+                </RadioGroup>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Question 4: Social Connection -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4. How do you feel about social interactions?"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp" />
+                <RadioGroup
+                    android:id="@+id/rgSocial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton android:id="@+id/rbSoc1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I enjoy being around people and feel energized." />
+                    <RadioButton android:id="@+id/rbSoc2" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I'm comfortable but need alone time to recharge." />
+                    <RadioButton android:id="@+id/rbSoc3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I prefer solitude and find socializing draining." />
+                </RadioGroup>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Question 5: Sleep Quality -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5. How would you rate your sleep quality?"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp" />
+                <RadioGroup
+                    android:id="@+id/rgSleep"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton android:id="@+id/rbSlp1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I sleep well and wake up refreshed." />
+                    <RadioButton android:id="@+id/rbSlp2" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="My sleep is okay, sometimes restless." />
+                    <RadioButton android:id="@+id/rbSlp3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I struggle with insomnia or poor sleep." />
+                </RadioGroup>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Question 6: Motivation Level -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6. How motivated do you feel to achieve your goals?"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp" />
+                <RadioGroup
+                    android:id="@+id/rgMotivation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton android:id="@+id/rbMot1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Highly motivated, I pursue my goals actively." />
+                    <RadioButton android:id="@+id/rbMot2" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Moderately motivated, I have ups and downs." />
+                    <RadioButton android:id="@+id/rbMot3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Low motivation, I struggle to get started." />
+                </RadioGroup>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Question 7: Physical Activity -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7. How often do you engage in physical exercise?"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp" />
+                <RadioGroup
+                    android:id="@+id/rgActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton android:id="@+id/rbAct1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Regularly (3+ times per week)" />
+                    <RadioButton android:id="@+id/rbAct2" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Occasionally (1-2 times per week)" />
+                    <RadioButton android:id="@+id/rbAct3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Rarely or never" />
+                </RadioGroup>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Question 8: Stress Management -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8. How well do you manage stress?"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp" />
+                <RadioGroup
+                    android:id="@+id/rgStress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton android:id="@+id/rbStr1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Very well, I have healthy coping mechanisms." />
+                    <RadioButton android:id="@+id/rbStr2" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Sometimes I manage, other times I struggle." />
+                    <RadioButton android:id="@+id/rbStr3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="I often feel overwhelmed and need support." />
+                </RadioGroup>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Question 9: Daily Routine Structure -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9. How structured is your daily routine?"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp" />
+                <RadioGroup
+                    android:id="@+id/rgRoutine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton android:id="@+id/rbRou1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Very structured, I have clear daily habits." />
+                    <RadioButton android:id="@+id/rbRou2" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Somewhat structured, I try to have a routine." />
+                    <RadioButton android:id="@+id/rbRou3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Not structured, I go with the flow." />
+                </RadioGroup>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Question 10: Self-Care Priority -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10. How important is self-care in your life?"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp" />
+                <RadioGroup
+                    android:id="@+id/rgSelfCare"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton android:id="@+id/rbCar1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Very important, I prioritize it daily." />
+                    <RadioButton android:id="@+id/rbCar2" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Somewhat important, I try but struggle." />
+                    <RadioButton android:id="@+id/rbCar3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Not a priority, I focus on others/tasks first." />
                 </RadioGroup>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

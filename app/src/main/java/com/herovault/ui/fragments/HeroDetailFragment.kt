@@ -1,11 +1,9 @@
 package com.herovault.ui.fragments
 
-import android.animation.Animator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
@@ -21,6 +19,10 @@ class HeroDetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: HeroViewModel by activityViewModels()
     private lateinit var soundManager: SoundManager
+    private lateinit var adapter: TabPagerAdapter
+
+    // Store current tab position
+    private var currentTabPosition = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,29 +36,49 @@ class HeroDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         soundManager = SoundManager(requireContext())
 
+        // Restore saved tab position if exists
+        currentTabPosition = savedInstanceState?.getInt("selected_tab", 0) ?: 0
+
+        setupViewPager()
         setupBottomNav()
         observeHero()
         observeEvents()
     }
 
-    private fun setupBottomNav() {
-        val adapter = TabPagerAdapter(requireActivity())
+    private fun setupViewPager() {
+        // Create new adapter instance
+        adapter = TabPagerAdapter(requireActivity())
         binding.viewPagerDetail.adapter = adapter
         binding.viewPagerDetail.isUserInputEnabled = false
+
+        // Restore previous position
+        binding.viewPagerDetail.currentItem = currentTabPosition
+    }
+
+    private fun setupBottomNav() {
+        // Set the correct menu item checked based on current tab
+        when (currentTabPosition) {
+            0 -> binding.bottomNavigationDetail.menu.getItem(0).isChecked = true
+            1 -> binding.bottomNavigationDetail.menu.getItem(1).isChecked = true
+            2 -> binding.bottomNavigationDetail.menu.getItem(2).isChecked = true
+        }
 
         binding.bottomNavigationDetail.setOnItemSelectedListener { item ->
             soundManager.playClick()
             when (item.itemId) {
                 R.id.nav_stats -> {
                     binding.viewPagerDetail.currentItem = 0
+                    currentTabPosition = 0
                     true
                 }
                 R.id.nav_quests -> {
                     binding.viewPagerDetail.currentItem = 1
+                    currentTabPosition = 1
                     true
                 }
                 R.id.nav_vault -> {
                     binding.viewPagerDetail.currentItem = 2
+                    currentTabPosition = 2
                     true
                 }
                 else -> false
@@ -65,6 +87,7 @@ class HeroDetailFragment : Fragment() {
 
         binding.viewPagerDetail.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
+                currentTabPosition = position
                 binding.bottomNavigationDetail.menu.getItem(position).isChecked = true
             }
         })
@@ -81,7 +104,7 @@ class HeroDetailFragment : Fragment() {
                 // Update Psychological Meaning
                 binding.heroLoreDescription.text = it.psychologicalDescription
 
-                // Update Evolution Title (e.g., Novice -> Adept -> Excellent)
+                // Update Evolution Title
                 binding.heroEvolutionTitleDetail.text = it.getEvolutionTitle()
 
                 // Apply Dynamic Border based on Level
@@ -91,36 +114,30 @@ class HeroDetailFragment : Fragment() {
                 } else {
                     binding.portraitContainer.background = null
                 }
-
-
             }
         }
     }
 
     private fun observeEvents() {
-        // Observe Level Up Event
         viewModel.levelUpEvent.observe(viewLifecycleOwner) { level ->
             if (level != null) {
                 soundManager.playLevelUp()
-
-                // Level Up animation removed - Lottie confetti no longer available
-                // You can show a simple Toast or Snackbar instead
-                Toast.makeText(context, "LEVEL UP! Reach Level $level", Toast.LENGTH_LONG).show()
                 viewModel.resetEvents()
             }
         }
 
-        // Observe Loot Claimed Event
         viewModel.lootClaimedEvent.observe(viewLifecycleOwner) { lootId ->
             if (lootId != null) {
                 soundManager.playLootClaimed()
-
-                // Loot claimed animation removed - Lottie glow no longer available
-                Toast.makeText(context, "Loot Claimed!", Toast.LENGTH_SHORT).show()
-
                 viewModel.resetEvents()
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Save current tab position
+        outState.putInt("selected_tab", currentTabPosition)
     }
 
     override fun onDestroyView() {

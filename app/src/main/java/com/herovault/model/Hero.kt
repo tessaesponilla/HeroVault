@@ -46,11 +46,11 @@ data class Hero(
 ) {
     fun getEvolutionTitle(): String {
         return when {
-            level >= 20 -> "Excellent (Zen Master)"
-            level >= 15 -> "Superior (Vanguard)"
-            level >= 10 -> "Skilled (Adept)"
-            level >= 5  -> "Developing (Novice)"
-            else        -> "Normal (Beginner)"
+            level >= 20 -> "Excellent"
+            level >= 15 -> "Adept"
+            level >= 10 -> "Advanced"
+            level >= 5  -> "Intermediate"
+            else        -> "Novice"
         }
     }
 

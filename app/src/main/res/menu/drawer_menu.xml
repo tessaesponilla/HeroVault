@@ -4,24 +4,14 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_achievements"
-            android:icon="@drawable/ic_crown"
-            android:title="Overall Achievements" />
-
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_star"
-            android:title="Switch Hero" />
-
-        <item
-            android:id="@+id/nav_overall_loot"
-            android:icon="@drawable/ic_vault"
-            android:title="Overall Hero Loot Items" />
-
-        <item
             android:id="@+id/nav_loot"
             android:icon="@drawable/ic_vault"
-            android:title="Current Hero Loot Items" />
+            android:title="My Loots" />
+
+        <item
+            android:id="@+id/nav_achievements"
+            android:icon="@drawable/ic_crown"
+            android:title="Achievements" />
 
     </group>
 
@@ -34,7 +24,7 @@
             <item
                 android:id="@+id/nav_reset"
                 android:icon="@drawable/ic_shield"
-                android:title="Reset All Progress" />
+                android:title="Reset Progress" />
         </menu>
     </item>
 

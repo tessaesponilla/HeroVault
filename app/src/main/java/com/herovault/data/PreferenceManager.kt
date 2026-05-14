@@ -9,10 +9,10 @@ class PreferenceManager(context: Context) {
 
     private val prefs: SharedPreferences =
         context.getSharedPreferences("herovault_prefs", Context.MODE_PRIVATE)
-    
-    // Cache the last reset hour to avoid redundant preference iterations
-    private var lastCheckedHour: String = ""
 
+    private var lastCheckedDay: String = ""
+
+    // ==================== HERO STATS (Permanent) ====================
     fun saveHeroStats(heroId: String, hp: Int, mp: Int, xp: Int, level: Int) {
         prefs.edit().apply {
             putInt("${heroId}_hp", hp)
@@ -34,7 +34,7 @@ class PreferenceManager(context: Context) {
     fun isOnboardingCompleted(): Boolean = prefs.getBoolean("onboarding_complete", false)
     fun setOnboardingCompleted(completed: Boolean) = prefs.edit().putBoolean("onboarding_complete", completed).apply()
 
-    // --- Equipment Logic ---
+    // ==================== EQUIPMENT (Permanent) ====================
     fun saveEquippedItems(heroId: String, itemIds: List<String>) {
         prefs.edit().putString("${heroId}_equipped", itemIds.joinToString(",")).apply()
     }
@@ -44,27 +44,32 @@ class PreferenceManager(context: Context) {
         return if (saved.isEmpty()) emptyList() else saved.split(",")
     }
 
-    // --- Quest & Loot Logic ---
+    // ==================== QUESTS (Daily Reset) ====================
+
+    private fun getTodayKey(): String {
+        return SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
+    }
 
     fun isQuestCompleted(questId: String): Boolean {
-        checkHourlyReset()
-        return prefs.getBoolean("quest_done_$questId", false)
+        checkDailyReset()
+        return prefs.getBoolean("quest_done_${getTodayKey()}_$questId", false)
     }
 
     fun setQuestCompleted(questId: String) {
-        prefs.edit().putBoolean("quest_done_$questId", true).apply()
+        prefs.edit().putBoolean("quest_done_${getTodayKey()}_$questId", true).apply()
     }
 
     fun saveQuestEvidence(questId: String, uri: String) {
-        prefs.edit().putString("quest_evidence_$questId", uri).apply()
+        prefs.edit().putString("quest_evidence_${getTodayKey()}_$questId", uri).apply()
     }
 
     fun getQuestEvidence(questId: String): String? {
-        return prefs.getString("quest_evidence_$questId", null)
+        return prefs.getString("quest_evidence_${getTodayKey()}_$questId", null)
     }
 
+    // ==================== LOOT (Permanent - One time only) ====================
+
     fun isLootClaimed(lootId: String): Boolean {
-        checkHourlyReset()
         return prefs.getBoolean("loot_claimed_$lootId", false)
     }
 
@@ -81,40 +86,60 @@ class PreferenceManager(context: Context) {
         return prefs.getInt("achieve_count_$lootId", 0)
     }
 
-    private fun checkHourlyReset() {
-        val currentHour = SimpleDateFormat("yyyyMMddHH", Locale.getDefault()).format(Date())
-        
-        // Skip if already checked this hour
-        if (lastCheckedHour == currentHour) {
+    // ==================== DAILY RESET & HP/MP DRAIN ====================
+
+    private fun checkDailyReset() {
+        val today = getTodayKey()
+
+        if (lastCheckedDay == today) {
             return
         }
-        lastCheckedHour = currentHour
-        
-        val lastReset = prefs.getString("last_reset_hour", "")
+        lastCheckedDay = today
 
-        if (lastReset != currentHour) {
+        val lastResetDay = prefs.getString("last_reset_day", "") ?: ""
+
+        if (lastResetDay != today) {
             val editor = prefs.edit()
-            
-            if (lastReset != "") {
-                val heroId = loadSelectedHeroId()
-                if (heroId != null) {
-                    val currentHp = loadHp(heroId)
-                    val currentMp = loadMp(heroId)
-                    editor.putInt("${heroId}_hp", (currentHp - 5).coerceAtLeast(0))
-                    editor.putInt("${heroId}_mp", (currentMp - 5).coerceAtLeast(0))
-                }
-            }
 
+            // Remove OLD quest data (from previous days)
             val allKeys = prefs.all
             for (key in allKeys.keys) {
-                if (key.startsWith("quest_done_") || key.startsWith("loot_claimed_") || key.startsWith("quest_evidence_")) {
+                if ((key.startsWith("quest_done_") || key.startsWith("quest_evidence_")) && !key.contains(today)) {
                     editor.remove(key)
                 }
             }
-            editor.putString("last_reset_hour", currentHour)
+
+            // Apply HP/MP drain for the new day
+            val heroId = loadSelectedHeroId()
+            if (heroId != null && lastResetDay.isNotEmpty()) {
+                val currentHp = loadHp(heroId)
+                val currentMp = loadMp(heroId)
+                editor.putInt("${heroId}_hp", (currentHp - 10).coerceAtLeast(0))
+                editor.putInt("${heroId}_mp", (currentMp - 10).coerceAtLeast(0))
+            }
+
+            editor.putString("last_reset_day", today)
             editor.apply()
         }
     }
+
+    // Call this from timer for hourly HP/MP drain (smaller drain)
+    fun applyHourlyDrain() {
+        val heroId = loadSelectedHeroId()
+        if (heroId == null) return
+
+        val currentHp = loadHp(heroId)
+        val currentMp = loadMp(heroId)
+
+        // Small hourly drain (2 HP/MP per hour)
+        prefs.edit().apply {
+            putInt("${heroId}_hp", (currentHp - 2).coerceAtLeast(0))
+            putInt("${heroId}_mp", (currentMp - 2).coerceAtLeast(0))
+            apply()
+        }
+    }
+
+    // ==================== RESET ALL ====================
 
     fun resetAllProgress() {
         prefs.edit().clear().apply()

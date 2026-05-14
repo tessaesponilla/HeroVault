@@ -33,7 +33,7 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
     val heroList = listOf(
         Hero(
             id = "knight",
-            name = "The Knight",
+            name = "The Guardian",
             className = "The Guardian",
             pillar = "Physical Resilience",
             portraitRes = R.drawable.portrait_knight,
@@ -56,7 +56,7 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
         ),
         Hero(
             id = "wizard",
-            name = "The Wizard",
+            name = "The Sage",
             className = "The Sage",
             pillar = "Mental Focus",
             portraitRes = R.drawable.portrait_wizard,
@@ -79,7 +79,7 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
         ),
         Hero(
             id = "king",
-            name = "The King",
+            name = "The Sovereign",
             className = "The Sovereign",
             pillar = "Organization",
             portraitRes = R.drawable.portrait_king,
@@ -102,7 +102,7 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
         ),
         Hero(
             id = "queen",
-            name = "The Queen",
+            name = "The Empath",
             className = "The Empath",
             pillar = "Emotional Health",
             portraitRes = R.drawable.portrait_queen,
@@ -125,7 +125,7 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
         ),
         Hero(
             id = "citizen_f",
-            name = "Woman Citizen",
+            name = "The Balanced",
             className = "The Balanced",
             pillar = "Work-Life Boundaries",
             portraitRes = R.drawable.portrait_citizen_f,
@@ -148,7 +148,7 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
         ),
         Hero(
             id = "citizen_m",
-            name = "Man Citizen",
+            name = "The Mindful",
             className = "The Mindful",
             pillar = "Daily Presence",
             portraitRes = R.drawable.portrait_citizen_m,
@@ -200,9 +200,11 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
             override fun run() {
                 val calendar = Calendar.getInstance()
                 val minutesInHour = calendar.get(Calendar.MINUTE)
-                val secondsInMinute = calendar.get(Calendar.SECOND)
                 val minutesRemaining = 59 - minutesInHour
                 _minutesRemaining.postValue(minutesRemaining)
+
+                // Apply hourly HP/MP drain
+                prefManager.applyHourlyDrain()
 
                 // Refresh hero stats every minute
                 val currentHero = _selectedHero.value
@@ -355,12 +357,55 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
         prefManager.setOnboardingCompleted(false)
     }
 
-    fun discoverHero(physicalScore: Int, mentalScore: Int, emotionalScore: Int) {
+    fun discoverHero(
+        pScore: Int,        // Physical Energy (1-3)
+        mScore: Int,        // Mental Focus (1-3)
+        eScore: Int,        // Emotional Response (1-3)
+        sScore: Int,        // Social Connection (1-3)
+        sleepScore: Int,    // Sleep Quality (1-3)
+        motScore: Int,      // Motivation (1-3)
+        actScore: Int,      // Physical Activity (1-3)
+        stressScore: Int,   // Stress Management (1-3)
+        routineScore: Int,  // Routine Structure (1-3)
+        selfCareScore: Int  // Self-Care Priority (1-3)
+    ) {
+        // Calculate dimension totals (lower score = healthier)
+        val physicalTotal = pScore + actScore + sleepScore  // Range: 3-9
+        val mentalTotal = mScore + motScore + routineScore  // Range: 3-9
+        val emotionalTotal = eScore + stressScore + sScore + selfCareScore  // Range: 4-12
+
+        // Calculate specific factors
+        val stressLevel = stressScore + eScore  // Range: 2-6 (higher = more stressed)
+        val socialPreference = sScore  // Range: 1-3 (higher = more solitary)
+        val routinePreference = routineScore  // Range: 1-3 (higher = more flexible)
+        val selfCarePriority = selfCareScore  // Range: 1-3 (higher = lower priority)
+
+        // Determine hero based on multiple factors
         val assignedHeroId = when {
-            physicalScore >= mentalScore && physicalScore >= emotionalScore -> "knight"
-            mentalScore >= physicalScore && mentalScore >= emotionalScore -> "wizard"
+            // The Guardian (Knight): High physical health, low stress, active, good sleep
+            (physicalTotal <= 4 && stressLevel <= 3 && actScore <= 2 && sleepScore <= 2) -> "knight"
+
+            // The Sage (Wizard): High mental clarity, solitary, structured
+            (mentalTotal <= 4 && socialPreference >= 2 && routinePreference <= 2 && physicalTotal >= 5) -> "wizard"
+
+            // The Empath (Queen): High emotional awareness, higher stress, social, low self-care
+            (emotionalTotal >= 8 && stressLevel >= 4 && socialPreference <= 2 && selfCarePriority >= 2) -> "queen"
+
+            // The Sovereign (King): Balanced, structured, moderate everything
+            (routinePreference <= 2 && physicalTotal in 4..6 && mentalTotal in 4..6 && emotionalTotal in 6..8) -> "king"
+
+            // The Balanced (Woman Citizen): Lower mental energy, moderate physical, struggles with self-care
+            (mentalTotal >= 6 && selfCarePriority >= 2 && physicalTotal in 4..6 && emotionalTotal in 6..8) -> "citizen_f"
+
+            // The Mindful (Man Citizen): Lower emotional energy, solitary preference
+            (emotionalTotal <= 6 && socialPreference >= 2 && physicalTotal in 4..6 && mentalTotal in 4..6) -> "citizen_m"
+
+            // Fallback based on primary dimension
+            physicalTotal <= mentalTotal && physicalTotal <= emotionalTotal -> "knight"
+            mentalTotal <= physicalTotal && mentalTotal <= emotionalTotal -> "wizard"
             else -> "queen"
         }
+
         selectHero(assignedHeroId)
         prefManager.setOnboardingCompleted(true)
     }
