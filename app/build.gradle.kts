@@ -49,7 +49,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.cardview)
 
-
+    implementation(libs.mlkit.image.labeling)
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

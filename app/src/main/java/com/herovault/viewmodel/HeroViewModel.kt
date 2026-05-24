@@ -41,11 +41,16 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
             pillar = "Physical Resilience",
             portraitRes = R.drawable.portrait_knight,
             quests = mutableListOf(
-                Quest("k1", "Hydration Check", "Drink a full glass of water.", 15, 5, 20, QuestCategory.PHYSICAL),
-                Quest("k2", "Morning Stretch", "Stretch your body for 5 minutes.", 20, 10, 25, QuestCategory.PHYSICAL),
-                Quest("k3", "Walk Outside", "Go for a 10+ minute walk outdoors.", 25, 10, 30, QuestCategory.PHYSICAL),
-                Quest("k4", "Home Workout", "Complete a home exercise session.", 30, 15, 40, QuestCategory.PHYSICAL),
-                Quest("k5", "Healthy Meal", "Prepare and eat a balanced meal.", 20, 15, 35, QuestCategory.PHYSICAL)
+                Quest("k1", "Hydration Check", "Drink a full glass of water.", 15, 5, 20, QuestCategory.PHYSICAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
+                Quest("k2", "Morning Stretch", "Stretch your body for 5 minutes.", 20, 10, 25, QuestCategory.PHYSICAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE, ProofType.VIDEO)),
+                Quest("k3", "Walk Outside", "Go for a 10+ minute walk outdoors.", 25, 10, 30, QuestCategory.PHYSICAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE, ProofType.VIDEO)),
+                Quest("k4", "Home Workout", "Complete a home exercise session.", 30, 15, 40, QuestCategory.PHYSICAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE, ProofType.VIDEO)),
+                Quest("k5", "Healthy Meal", "Prepare and eat a balanced meal.", 20, 15, 35, QuestCategory.PHYSICAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
             ),
             lootTable = listOf(
                 Loot("knight_1", "Chainmail Vest", "🛡️", lore = "Built through physical consistency.", hpBonus = 15),
@@ -65,11 +70,16 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
             pillar = "Work-Life Boundaries",
             portraitRes = R.drawable.portrait_citizen_f,
             quests = mutableListOf(
-                Quest("cf1", "Screen-Free Corner", "Spend 15 minutes in a place without screens (read, drink tea, look out a window).", 10, 15, 15, QuestCategory.EMOTIONAL),
-                Quest("cf2", "Work Shutdown Ritual", "Close your laptop and physically step away from your desk.", 15, 10, 20, QuestCategory.EMOTIONAL),
-                Quest("cf3", "Nature Pause", "Take a 5-minute break outdoors or by a plant.", 20, 15, 25, QuestCategory.PHYSICAL),
-                Quest("cf4", "Evening Walk", "Walk for 15 minutes after your last work task.", 15, 10, 20, QuestCategory.PHYSICAL),
-                Quest("cf5", "Boundary Object", "Place a small object on your desk that signals 'work is done'.", 10, 20, 15, QuestCategory.EMOTIONAL)
+                Quest("cf1", "Screen-Free Corner", "Spend 15 minutes in a place without screens.", 10, 15, 15, QuestCategory.EMOTIONAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE, ProofType.TEXT)),
+                Quest("cf2", "Work Shutdown Ritual", "Close your laptop and step away.", 15, 10, 20, QuestCategory.EMOTIONAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
+                Quest("cf3", "Nature Pause", "Take a 5-minute break outdoors.", 20, 15, 25, QuestCategory.PHYSICAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
+                Quest("cf4", "Evening Walk", "Walk for 15 minutes after work.", 15, 10, 20, QuestCategory.PHYSICAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE, ProofType.VIDEO)),
+                Quest("cf5", "Boundary Object", "Place a small object on your desk.", 10, 20, 15, QuestCategory.EMOTIONAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
             ),
             lootTable = listOf(
                 Loot("citf_1", "Zen Tea Set", "🍵", lore = "Calming brew to disconnect.", mpBonus = 15),
@@ -89,11 +99,16 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
             pillar = "Mental Focus",
             portraitRes = R.drawable.portrait_wizard,
             quests = mutableListOf(
-                Quest("w1", "Book Page", "Read 10 pages of a book.", 5, 20, 20, QuestCategory.MENTAL),
-                Quest("w2", "Completed Puzzle", "Finish a Sudoku, crossword, or brain puzzle.", 10, 15, 25, QuestCategory.MENTAL),
-                Quest("w3", "Learning Note", "Write down three things you learned from a podcast, video, or article.", 10, 20, 25, QuestCategory.MENTAL),
-                Quest("w4", "Brain Game", "Play a logic or memory game for 15 minutes.", 10, 15, 20, QuestCategory.MENTAL),
-                Quest("w5", "Focus Timer", "Concentrate on a single task for 25 minutes without interruption.", 15, 25, 30, QuestCategory.MENTAL)
+                Quest("w1", "Book Page", "Read 10 pages of a book.", 5, 20, 20, QuestCategory.MENTAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE, ProofType.TEXT)),
+                Quest("w2", "Completed Puzzle", "Finish a Sudoku, crossword, or brain puzzle.", 10, 15, 25, QuestCategory.MENTAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
+                Quest("w3", "Learning Note", "Write down three things you learned.", 10, 20, 25, QuestCategory.MENTAL,
+                    allowedProofTypes = listOf(ProofType.TEXT, ProofType.IMAGE)),
+                Quest("w4", "Brain Game", "Play a logic or memory game for 15 minutes.", 10, 15, 20, QuestCategory.MENTAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
+                Quest("w5", "Focus Timer", "Concentrate on a single task for 25 minutes.", 15, 25, 30, QuestCategory.MENTAL,
+                    allowedProofTypes = listOf(ProofType.TEXT, ProofType.IMAGE)),
             ),
             lootTable = listOf(
                 Loot("wiz_1", "Clarity Lens", "🔎", lore = "Focuses attention on what matters.", mpBonus = 10),
@@ -113,11 +128,16 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
             pillar = "Organization",
             portraitRes = R.drawable.portrait_king,
             quests = mutableListOf(
-                Quest("kg1", "Decluttered Desk", "Clear your desk of unnecessary items.", 15, 10, 25, QuestCategory.ORGANIZATION),
-                Quest("kg2", "Written Plan", "Write down your three most important tasks for today.", 10, 15, 20, QuestCategory.ORGANIZATION),
-                Quest("kg3", "Organised Drawer", "Tidy one drawer or shelf in your home or office.", 15, 10, 25, QuestCategory.ORGANIZATION),
-                Quest("kg4", "Digital Cleanup", "Delete or archive 10 old files from your computer desktop.", 10, 15, 20, QuestCategory.ORGANIZATION),
-                Quest("kg5", "Weekly Review", "Review your calendar and plan the upcoming week.", 15, 15, 30, QuestCategory.ORGANIZATION)
+                Quest("kg1", "Decluttered Desk", "Clear your desk.", 15, 10, 25, QuestCategory.ORGANIZATION,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
+                Quest("kg2", "Written Plan", "Write your three most important tasks.", 10, 15, 20, QuestCategory.ORGANIZATION,
+                    allowedProofTypes = listOf(ProofType.TEXT, ProofType.IMAGE)),
+                Quest("kg3", "Organised Drawer", "Tidy one drawer or shelf.", 15, 10, 25, QuestCategory.ORGANIZATION,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
+                Quest("kg4", "Digital Cleanup", "Delete 10 old files from your desktop.", 10, 15, 20, QuestCategory.ORGANIZATION,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
+                Quest("kg5", "Weekly Review", "Review your calendar and plan the week.", 15, 15, 30, QuestCategory.ORGANIZATION,
+                    allowedProofTypes = listOf(ProofType.TEXT, ProofType.IMAGE)),
             ),
             lootTable = listOf(
                 Loot("king_1", "Ornate Quill", "🪶", lore = "Organizes daily objectives.", mpBonus = 12),
@@ -137,11 +157,16 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
             pillar = "Emotional Health",
             portraitRes = R.drawable.portrait_queen,
             quests = mutableListOf(
-                Quest("q1", "Gratitude Object", "Identify one thing you're grateful for and hold it in your hands.", 10, 15, 15, QuestCategory.EMOTIONAL),
-                Quest("q2", "Support Message", "Send a kind message to a friend or family member.", 15, 10, 20, QuestCategory.EMOTIONAL),
-                Quest("q3", "Comfort Kit", "Prepare a small box or bag with items that comfort you (tea, blanket, candle).", 15, 10, 20, QuestCategory.EMOTIONAL),
-                Quest("q4", "Social Proof", "Spend 15 minutes with a person or pet you love.", 20, 15, 25, QuestCategory.EMOTIONAL),
-                Quest("q5", "Journal Page", "Write one page about how you're feeling right now.", 10, 20, 20, QuestCategory.MENTAL)
+                Quest("q1", "Gratitude Object", "Identify one thing you're grateful for.", 10, 15, 15, QuestCategory.EMOTIONAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE, ProofType.TEXT)),
+                Quest("q2", "Support Message", "Send a kind message to someone.", 15, 10, 20, QuestCategory.EMOTIONAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE, ProofType.TEXT)),
+                Quest("q3", "Comfort Kit", "Prepare a small comfort box.", 15, 10, 20, QuestCategory.EMOTIONAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
+                Quest("q4", "Social Proof", "Spend 15 minutes with someone you love.", 20, 15, 25, QuestCategory.EMOTIONAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE, ProofType.VIDEO)),
+                Quest("q5", "Journal Page", "Write one page about how you're feeling.", 10, 20, 20, QuestCategory.MENTAL,
+                    allowedProofTypes = listOf(ProofType.TEXT, ProofType.IMAGE)),
             ),
             lootTable = listOf(
                 Loot("queen_1", "Compassion Mirror", "🪞", lore = "Reflects internal goodness.", hpBonus = 10),
@@ -161,11 +186,16 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
             pillar = "Daily Presence",
             portraitRes = R.drawable.portrait_citizen_m,
             quests = mutableListOf(
-                Quest("cm1", "Meditation Spot", "Sit quietly in a designated spot for 5 minutes.", 10, 15, 15, QuestCategory.MENTAL),
-                Quest("cm2", "Mindful Meal", "Eat one meal without any screens or distractions.", 15, 15, 20, QuestCategory.PHYSICAL),
-                Quest("cm3", "Nature Moment", "Pause for 10 seconds and observe a natural object (leaf, cloud, water).", 10, 10, 15, QuestCategory.MENTAL),
-                Quest("cm4", "Breathing Reminder", "Set a timer to go off every hour – when it rings, take three deep breaths.", 10, 15, 15, QuestCategory.MENTAL),
-                Quest("cm5", "Present Object", "Pick an object, hold it, and describe it in detail using your senses.", 15, 15, 20, QuestCategory.MENTAL)
+                Quest("cm1", "Meditation Spot", "Sit quietly for 5 minutes.", 10, 15, 15, QuestCategory.MENTAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE, ProofType.AUDIO)),
+                Quest("cm2", "Mindful Meal", "Eat one meal without screens.", 15, 15, 20, QuestCategory.PHYSICAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
+                Quest("cm3", "Nature Moment", "Observe a natural object for 10 seconds.", 10, 10, 15, QuestCategory.MENTAL,
+                    allowedProofTypes = listOf(ProofType.IMAGE)),
+                Quest("cm4", "Breathing Reminder", "Take three deep breaths every hour.", 10, 15, 15, QuestCategory.MENTAL,
+                    allowedProofTypes = listOf(ProofType.AUDIO, ProofType.TEXT)),
+                Quest("cm5", "Present Object", "Hold an object and describe it.", 15, 15, 20, QuestCategory.MENTAL,
+                    allowedProofTypes = listOf(ProofType.TEXT, ProofType.IMAGE)),
             ),
             lootTable = listOf(
                 Loot("citm_1", "Singing Bowl", "🥣", lore = "Rings a tone of pure presence.", mpBonus = 10),
@@ -242,7 +272,7 @@ class HeroViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun injectBossQuestIfNeeded(hero: Hero) {
         if (hero.level >= 10 && hero.quests.none { it.id.endsWith("_boss") }) {
-            hero.quests.add(Quest("${hero.id}_boss", "⚔️ BOSS BATTLE", "Defeat internal resistance – write a reflective journal entry.", 50, 50, 500, QuestCategory.MENTAL))
+            hero.quests.add(Quest("${hero.id}_boss", "⚔️ BOSS BATTLE", "Defeat internal resistance – write a reflective journal entry.", 50, 50, 500, QuestCategory.MENTAL,  allowedProofTypes = listOf(ProofType.TEXT, ProofType.IMAGE)))
         }
     }
 

@@ -3,7 +3,7 @@ package com.herovault.model
 import com.herovault.R
 
 enum class QuestCategory { PHYSICAL, MENTAL, EMOTIONAL, ORGANIZATION }
-
+enum class ProofType { IMAGE, VIDEO, AUDIO, TEXT }
 data class Quest(
     val id: String,
     val title: String,
@@ -12,7 +12,8 @@ data class Quest(
     val mpGain: Int,
     val xpGain: Int,
     val category: QuestCategory,
-    val requiresImage: Boolean = true
+    val requiresImage: Boolean = true,
+    val allowedProofTypes: List<ProofType> = listOf(ProofType.IMAGE)
 )
 
 data class Loot(
