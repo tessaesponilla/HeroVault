@@ -83,11 +83,21 @@ class AchievementsFragment : Fragment() {
 
         // ===== RANK ACHIEVEMENTS =====
         addSectionHeader("🏆 Rank Achievements")
-        addAchievementCard("Novice", "Reach Level 1", "🌟", hero.level >= 1, 1, hero.level)
-        addAchievementCard("Intermediate", "Reach Level 5", "⭐", hero.level >= 5, 5, hero.level)
-        addAchievementCard("Advanced", "Reach Level 10", "💫", hero.level >= 10, 10, hero.level)
-        addAchievementCard("Adept", "Reach Level 15", "✨", hero.level >= 15, 15, hero.level)
-        addAchievementCard("Excellent", "Reach Level 20", "👑", hero.level >= 20, 20, hero.level)
+        addAchievementCard("Initiate", "Reach Level 1", "🌟", hero.level >= 1, 1, hero.level)
+        addAchievementCard("Aspirant", "Reach Level 2", "⭐", hero.level >= 2, 2, hero.level)
+        addAchievementCard("Practitioner", "Reach Level 3", "💫", hero.level >= 3, 3, hero.level)
+        addAchievementCard("Steady", "Reach Level 4", "✨", hero.level >= 4, 4, hero.level)
+        addAchievementCard("Adept", "Reach Level 5", "🌟", hero.level >= 5, 5, hero.level)
+        addAchievementCard("Resilient", "Reach Level 6", "🛡️", hero.level >= 6, 6, hero.level)
+        addAchievementCard("Disciplined", "Reach Level 7", "⚔️", hero.level >= 7, 7, hero.level)
+        addAchievementCard("Skilled", "Reach Level 8", "🎯", hero.level >= 8, 8, hero.level)
+        addAchievementCard("Vanguard", "Reach Level 9", "🛡️", hero.level >= 9, 9, hero.level)
+        addAchievementCard("Elite", "Reach Level 10", "👑", hero.level >= 10, 10, hero.level)
+        addAchievementCard("Expert", "Reach Level 11", "📚", hero.level >= 11, 11, hero.level)
+        addAchievementCard("Superior", "Reach Level 15", "🏅", hero.level >= 15, 15, hero.level)
+        addAchievementCard("Legendary", "Reach Level 20", "🏆", hero.level >= 20, 20, hero.level)
+        addAchievementCard("Grandmaster", "Reach Level 25", "🔱", hero.level >= 25, 25, hero.level)
+        addAchievementCard("Zen Master", "Reach Level 30", "☯️", hero.level >= 30, 30, hero.level)
 
         // ===== QUEST ACHIEVEMENTS =====
         addSectionHeader("📜 Quest Achievements")
