@@ -2,6 +2,8 @@ package com.herovault.model
 
 import com.herovault.R
 
+enum class QuestCategory { PHYSICAL, MENTAL, EMOTIONAL, ORGANIZATION }
+
 data class Quest(
     val id: String,
     val title: String,
@@ -9,6 +11,7 @@ data class Quest(
     val hpGain: Int,
     val mpGain: Int,
     val xpGain: Int,
+    val category: QuestCategory,
     val requiresImage: Boolean = true
 )
 
@@ -45,18 +48,31 @@ data class Hero(
     var level: Int = 1
 ) {
     fun getEvolutionTitle(): String {
-        return when {
-            level >= 20 -> "Excellent"
-            level >= 15 -> "Adept"
-            level >= 10 -> "Advanced"
-            level >= 5  -> "Intermediate"
-            else        -> "Novice"
+        return when (level) {
+            1 -> "Initiate"
+            2 -> "Aspirant"
+            3 -> "Practitioner"
+            4 -> "Steady"
+            5 -> "Adept"
+            6 -> "Resilient"
+            7 -> "Disciplined"
+            8 -> "Skilled"
+            9 -> "Vanguard"
+            10 -> "Elite"
+            in 11..14 -> "Expert"
+            in 15..19 -> "Superior"
+            in 20..24 -> "Legendary"
+            in 25..29 -> "Grandmaster"
+            else -> "Zen Master (Excellent)"
         }
     }
 
     fun getBorderResource(): Int {
         return when {
+            level >= 30 -> R.drawable.border_mastery
+            level >= 25 -> R.drawable.border_diamond
             level >= 20 -> R.drawable.border_gold
+            level >= 15 -> R.drawable.border_platinum
             level >= 10 -> R.drawable.border_silver
             level >= 5  -> R.drawable.border_bronze
             else        -> 0

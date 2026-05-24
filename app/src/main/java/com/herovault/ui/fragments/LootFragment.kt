@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.herovault.databinding.DialogLootDetailBinding
 import com.herovault.databinding.FragmentLootBinding
 import com.herovault.ui.adapter.LootCollectionAdapter
 import com.herovault.ui.adapter.LootCollectionItem
@@ -52,6 +54,9 @@ class LootFragment : Fragment() {
                         icon = loot.icon,
                         name = loot.name,
                         count = count,
+                        lore = loot.lore,
+                        hpBonus = loot.hpBonus,
+                        mpBonus = loot.mpBonus,
                         isEquipped = isEquipped
                     )
                 )
@@ -59,10 +64,28 @@ class LootFragment : Fragment() {
         }
 
         binding.lootRecyclerView.adapter = LootCollectionAdapter(claimedItems) { item ->
-            viewModel.equipItem(item.id)
-            val msg = if (item.isEquipped) "Unequipped ${item.name}" else "Equipped ${item.name}!"
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            showLootDetailDialog(item)
         }
+    }
+
+    private fun showLootDetailDialog(item: LootCollectionItem) {
+        val dialogBinding = DialogLootDetailBinding.inflate(layoutInflater)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        dialogBinding.dialogLootIcon.text = item.icon
+        dialogBinding.dialogLootName.text = item.name
+        dialogBinding.dialogLootLore.text = item.lore
+        dialogBinding.dialogLootStats.text = "Bonus: +${item.hpBonus} HP | +${item.mpBonus} MP"
+        
+        dialogBinding.btnEquipAction.text = if (item.isEquipped) "Unequip" else "Equip Item"
+        dialogBinding.btnEquipAction.setOnClickListener {
+            viewModel.equipItem(item.id)
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     override fun onDestroyView() {

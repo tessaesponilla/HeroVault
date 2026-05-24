@@ -1,255 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_bg"
-    android:padding="16dp">
+    android:background="@color/gray_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <!-- Rank and Level Card -->
-        <androidx.cardview.widget.CardView
+        <!-- Rank & Level Badge -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/gold_dark">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:id="@+id/textRank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gold_dark"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    tools:text="ADEPT" />
+
+                <TextView
+                    android:id="@+id/textLevelNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/deep_blue"
+                    android:textSize="48sp"
+                    android:textStyle="bold"
+                    tools:text="5" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CURRENT LEVEL"
+                    android:textColor="#757575"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Daily Mood Reflection -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMood"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp">
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="20dp"
-                android:baselineAligned="false">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <!-- Rank Column -->
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/textMoodTitle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
+                    android:text="Daily Mental Check-in"
+                    android:textStyle="bold"
+                    android:textColor="@color/deep_blue"
+                    android:textSize="14sp"
+                    android:textAllCaps="true" />
+
+                <LinearLayout
+                    android:id="@+id/layoutMoodOptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal"
                     android:gravity="center">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="RANK"
-                        android:textSize="12sp"
-                        android:textColor="@android:color/darker_gray"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textRank"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Novice"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/deep_blue" />
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:color/darker_gray" />
-
-                <!-- Level Column -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="LEVEL"
-                        android:textSize="12sp"
-                        android:textColor="@android:color/darker_gray"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textLevelNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="1"
-                        android:textSize="32sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/deep_blue" />
-                </LinearLayout>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- HP Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <TextView
+                    <Button
+                        android:id="@+id/btnMoodHappy"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="❤️ Health Points"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black" />
+                        android:text="😊"
+                        android:textSize="24sp" />
 
-                    <TextView
-                        android:id="@+id/textHp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0/0"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/darker_gray"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <ProgressBar
-                    android:id="@+id/progressHp"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:layout_marginTop="12dp"
-                    android:progressTint="#EF4444"
-                    android:progressBackgroundTint="#E0E0E0" />
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- MP Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <TextView
+                    <Button
+                        android:id="@+id/btnMoodAnxious"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="💙 Mind Power"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black" />
+                        android:text="😟"
+                        android:textSize="24sp" />
 
-                    <TextView
-                        android:id="@+id/textMp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0/0"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/darker_gray"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <ProgressBar
-                    android:id="@+id/progressMp"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:layout_marginTop="12dp"
-                    android:progressTint="#3B82F6"
-                    android:progressBackgroundTint="#E0E0E0" />
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- XP Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <TextView
+                    <Button
+                        android:id="@+id/btnMoodTired"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="⭐ Experience"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black" />
+                        android:text="😴"
+                        android:textSize="24sp" />
 
-                    <TextView
-                        android:id="@+id/textXp"
-                        android:layout_width="wrap_content"
+                    <Button
+                        android:id="@+id/btnMoodStressed"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="0/0"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/darker_gray"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:text="🤯"
+                        android:textSize="24sp" />
                 </LinearLayout>
 
-                <ProgressBar
-                    android:id="@+id/progressXp"
-                    style="?android:attr/progressBarStyleHorizontal"
+                <TextView
+                    android:id="@+id/textCurrentMood"
                     android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:layout_marginTop="12dp"
-                    android:progressTint="#10B981"
-                    android:progressBackgroundTint="#E0E0E0" />
-
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textStyle="italic"
+                    tools:text="You are feeling Happy today."
+                    tools:visibility="visible" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <!-- Skills and Mastery Card -->
-        <androidx.cardview.widget.CardView
+        <!-- Psychological Insight Section -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#E0E0E0">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -260,22 +160,132 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="⚡ Skills and Mastery"
-                    android:textSize="16sp"
+                    android:text="Companion Note"
+                    android:textSize="12sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:layout_marginBottom="12dp" />
+                    android:textColor="@color/deep_blue"
+                    android:textAllCaps="true" />
 
-                <LinearLayout
-                    android:id="@+id/skillsContainer"
+                <TextView
+                    android:id="@+id/textClinicalInsight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <!-- Skills items added dynamically -->
-                </LinearLayout>
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp"
+                    android:textColor="#424242"
+                    android:fontFamily="serif"
+                    tools:text="Observation: Your current archetypal profile is responding well..." />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
+        <!-- HP Progress -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/textHp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="#E53935"
+                    tools:text="HP: 85/100" />
+
+                <ProgressBar
+                    android:id="@+id/progressHp"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="8dp"
+                    android:progressTint="#E53935" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <!-- MP Progress -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/textMp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="#1565C0"
+                    tools:text="MP: 90/100" />
+
+                <ProgressBar
+                    android:id="@+id/progressMp"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="8dp"
+                    android:progressTint="#1565C0" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- XP Progress -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/textXp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="#2E7D32"
+                    tools:text="XP: 45/100" />
+
+                <ProgressBar
+                    android:id="@+id/progressXp"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="8dp"
+                    android:progressTint="#2E7D32" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Unlocked Skills Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Unlocked Capabilities"
+            android:textColor="@color/deep_blue"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:id="@+id/skillsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
 
     </LinearLayout>
 </ScrollView>

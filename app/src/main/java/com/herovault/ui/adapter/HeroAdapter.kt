@@ -23,7 +23,16 @@ class HeroAdapter(
         holder.binding.heroName.text = hero.name
         holder.binding.heroPillar.text = hero.pillar
         holder.binding.heroLevel.text = "Lv. ${hero.level}"
+        holder.binding.heroRank.text = hero.getEvolutionTitle()
         holder.binding.heroImage.setImageResource(hero.portraitRes)
+        
+        // Apply Dynamic Border in the list
+        val borderRes = hero.getBorderResource()
+        if (borderRes != 0) {
+            holder.binding.heroImageContainer.setBackgroundResource(borderRes)
+        } else {
+            holder.binding.heroImageContainer.background = null
+        }
         
         holder.itemView.setOnClickListener { onHeroClick(hero) }
     }

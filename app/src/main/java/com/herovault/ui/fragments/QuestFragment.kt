@@ -26,38 +26,39 @@ class QuestFragment : Fragment() {
     private val viewModel: HeroViewModel by activityViewModels()
     private lateinit var resetTimerText: TextView
     private var soundManager: SoundManager? = null
-    private var pendingQuest: Quest? = null
-    private lateinit var linearContainer: LinearLayout  // Store reference to container
+    private var pendingQuestId: String? = null
+    private lateinit var linearContainer: LinearLayout
 
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
-            pendingQuest?.let { quest ->
-                val savedImagePath = copyImageToAppStorage(uri)
-                if (savedImagePath != null) {
-                    soundManager?.playLootClaimed()
-                    viewModel.completeQuest(quest.id, quest.hpGain, quest.mpGain, quest.xpGain, savedImagePath)
-                    Toast.makeText(context, "Proof accepted! Quest Completed.", Toast.LENGTH_SHORT).show()
-                    refreshQuests() // Refresh after completion
-                } else {
-                    Toast.makeText(context, "Failed to save evidence.", Toast.LENGTH_SHORT).show()
+            val questId = pendingQuestId
+            val hero = viewModel.selectedHero.value
+            if (questId != null && hero != null) {
+                val quest = hero.quests.find { it.id == questId }
+                quest?.let { q ->
+                    // Copy image to internal storage so it persists forever
+                    val savedPath = saveImageToInternalStorage(uri)
+                    if (savedPath != null) {
+                        soundManager?.playLootClaimed()
+                        viewModel.completeQuest(q.id, q.hpGain, q.mpGain, q.xpGain, savedPath)
+                        Toast.makeText(context, "Proof accepted! Quest Completed.", Toast.LENGTH_SHORT).show()
+                        refreshQuests()
+                    }
                 }
             }
         } else {
-            Toast.makeText(context, "Evidence is required to validate the quest.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Evidence is required to validate.", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun copyImageToAppStorage(uri: Uri): String? {
+    private fun saveImageToInternalStorage(uri: Uri): String? {
         return try {
-            val inputStream = requireActivity().contentResolver.openInputStream(uri)
-            val fileName = "quest_evidence_${System.currentTimeMillis()}.jpg"
-            val file = File(requireContext().filesDir, fileName)
-
-            FileOutputStream(file).use { outputStream ->
-                inputStream?.copyTo(outputStream)
-            }
+            val inputStream = requireContext().contentResolver.openInputStream(uri)
+            val file = File(requireContext().filesDir, "proof_${System.currentTimeMillis()}.jpg")
+            val outputStream = FileOutputStream(file)
+            inputStream?.copyTo(outputStream)
             inputStream?.close()
-
+            outputStream.close()
             file.absolutePath
         } catch (e: Exception) {
             e.printStackTrace()
@@ -69,20 +70,17 @@ class QuestFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Restore state if process was killed
+        pendingQuestId = savedInstanceState?.getString("pending_quest_id")
+
         val rootContainer = android.widget.ScrollView(requireContext()).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
+            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             setPadding(48, 48, 48, 48)
         }
 
         linearContainer = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.VERTICAL
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
+            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         }
 
         rootContainer.addView(linearContainer)
@@ -98,11 +96,16 @@ class QuestFragment : Fragment() {
             resetTimerText.text = "⏳ Quests reset in $minutes minutes"
         }
 
-        viewModel.selectedHero.observe(viewLifecycleOwner) { hero ->
+        viewModel.selectedHero.observe(viewLifecycleOwner) {
             refreshQuests()
         }
 
         return rootContainer
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("pending_quest_id", pendingQuestId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -111,17 +114,13 @@ class QuestFragment : Fragment() {
     }
 
     private fun refreshQuests() {
-        val hero = viewModel.selectedHero.value
-        if (hero == null) return
-
-        // Remove all views except the first one (timer text)
+        val hero = viewModel.selectedHero.value ?: return
         val viewsToRemove = mutableListOf<View>()
         for (i in 1 until linearContainer.childCount) {
             viewsToRemove.add(linearContainer.getChildAt(i))
         }
         viewsToRemove.forEach { linearContainer.removeView(it) }
 
-        // Add header
         val header = TextView(requireContext()).apply {
             text = "📜 Quest Log — ${hero.className}"
             textSize = 20f
@@ -130,7 +129,6 @@ class QuestFragment : Fragment() {
         }
         linearContainer.addView(header)
 
-        // Add quest cards
         hero.quests.forEach { quest ->
             linearContainer.addView(buildQuestCard(quest))
         }
@@ -138,14 +136,10 @@ class QuestFragment : Fragment() {
 
     private fun buildQuestCard(quest: Quest): CardView {
         val context = requireContext()
-
         val card = CardView(context).apply {
             radius = 24f
             cardElevation = 8f
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { bottomMargin = 40 }
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { bottomMargin = 40 }
         }
 
         val inner = LinearLayout(context).apply {
@@ -178,39 +172,35 @@ class QuestFragment : Fragment() {
         if (isDone) {
             val evidencePath = viewModel.getQuestEvidence(quest.id)
             if (!evidencePath.isNullOrEmpty()) {
-                try {
-                    val file = File(evidencePath)
-                    if (file.exists()) {
-                        val thumbnail = ImageView(context).apply {
-                            layoutParams = LinearLayout.LayoutParams(250, 250).apply {
-                                topMargin = 16
-                                bottomMargin = 16
-                                gravity = android.view.Gravity.CENTER_HORIZONTAL
-                            }
-                            scaleType = ImageView.ScaleType.CENTER_CROP
-                            setImageURI(Uri.fromFile(file))
-                            clipToOutline = true
-                            setBackgroundResource(R.drawable.border_bronze)
+                val file = File(evidencePath)
+                if (file.exists()) {
+                    val thumbnail = ImageView(context).apply {
+                        layoutParams = LinearLayout.LayoutParams(400, 400).apply {
+                            topMargin = 16
+                            bottomMargin = 16
+                            gravity = android.view.Gravity.CENTER_HORIZONTAL
                         }
-                        inner.addView(thumbnail)
+                        scaleType = ImageView.ScaleType.CENTER_CROP
+                        setImageURI(Uri.fromFile(file))
+                        clipToOutline = true
+                        setBackgroundResource(R.drawable.border_bronze)
                     }
-                } catch (e: Exception) {
-                    // Image file doesn't exist or can't be loaded
+                    inner.addView(thumbnail)
                 }
             }
         }
 
         val button = Button(context).apply {
-            text = if (isDone) "✅ Proof Submitted" else "Upload Proof & Complete"
+            text = if (isDone) "Proof Submitted" else "Upload Proof & Complete"
             isEnabled = !isDone
             setOnClickListener {
                 soundManager?.playClick()
                 if (quest.requiresImage) {
-                    pendingQuest = quest
+                    pendingQuestId = quest.id
                     pickImageLauncher.launch("image/*")
                 } else {
                     viewModel.completeQuest(quest.id, quest.hpGain, quest.mpGain, quest.xpGain)
-                    refreshQuests() // Refresh after completion
+                    refreshQuests()
                 }
             }
         }
@@ -220,13 +210,7 @@ class QuestFragment : Fragment() {
         inner.addView(rewards)
         inner.addView(button)
         card.addView(inner)
-
         return card
-    }
-
-    override fun onResume() {
-        super.onResume()
-        refreshQuests()
     }
 
     override fun onDestroyView() {

@@ -11,6 +11,9 @@ data class LootCollectionItem(
     val icon: String,
     val name: String,
     val count: Int,
+    val lore: String = "",
+    val hpBonus: Int = 0,
+    val mpBonus: Int = 0,
     val isEquipped: Boolean = false
 )
 
@@ -36,7 +39,7 @@ class LootCollectionAdapter(
             holder.binding.root.setStrokeColor(Color.parseColor("#FFD700")) // Gold
             holder.binding.root.setStrokeWidth(4)
         } else {
-            holder.binding.lootCount.text = "Quantity: ${item.count}"
+            holder.binding.lootCount.text = "Qty: ${item.count}"
             holder.binding.root.setStrokeColor(Color.parseColor("#EEEEEE"))
             holder.binding.root.setStrokeWidth(1)
         }

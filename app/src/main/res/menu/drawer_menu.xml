@@ -2,17 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_star"
+            android:title="My Companion" />
 
         <item
             android:id="@+id/nav_loot"
             android:icon="@drawable/ic_vault"
-            android:title="My Loots" />
+            android:title="Current Hero Loot" />
 
         <item
             android:id="@+id/nav_achievements"
             android:icon="@drawable/ic_crown"
             android:title="Achievements" />
-
     </group>
 
     <item android:title="System">

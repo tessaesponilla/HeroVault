@@ -47,7 +47,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="The Health Companion | v1.0.0"
+                    android:text="Your Wellness Companion | v1.0.1"
                     android:textColor="#757575"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -57,7 +57,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="The Three Pillars of Heroism"
+            android:text="The Six Pillars of Heroism"
             android:textAllCaps="true"
             android:textColor="@color/deep_blue"
             android:textSize="12sp"
@@ -65,12 +65,6 @@
             android:layout_marginBottom="8dp"
             android:textStyle="bold" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -78,27 +72,289 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
+                <!-- Physical Resilience -->
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="🛡️ Physical Resilience\nRepresented by The Guardian, focusing on the strength of the body as the anchor for the mind."
-                    android:textSize="14sp"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="1dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="🧩 Mental Focus\nRepresented by The Sage, focusing on cognitive discipline and clarity in a chaotic world."
-                    android:textSize="14sp"
-                    android:layout_marginBottom="12dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
 
-                <TextView
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="🛡️"
+                            android:textSize="22sp"
+                            android:gravity="center" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Physical Resilience"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/deep_blue" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="The Guardian — strength of the body as anchor for the mind."
+                                android:textSize="12sp"
+                                android:textColor="#757575"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Mental Focus -->
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="💖 Emotional Health\nRepresented by The Empath, focusing on connection, empathy, and internal emotional regulation."
-                    android:textSize="14sp" />
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="🧩"
+                            android:textSize="22sp"
+                            android:gravity="center" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Mental Focus"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/deep_blue" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="The Sage — cognitive discipline and clarity in a chaotic world."
+                                android:textSize="12sp"
+                                android:textColor="#757575"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Emotional Health -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="💖"
+                            android:textSize="22sp"
+                            android:gravity="center" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Emotional Health"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/deep_blue" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="The Empath — connection, empathy, and emotional regulation."
+                                android:textSize="12sp"
+                                android:textColor="#757575"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Work-Life Boundaries -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="⚖️"
+                            android:textSize="22sp"
+                            android:gravity="center" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Work-Life Boundaries"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/deep_blue" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="The Balanced — harmony and preventing burnout through boundaries."
+                                android:textSize="12sp"
+                                android:textColor="#757575"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Organization -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="👑"
+                            android:textSize="22sp"
+                            android:gravity="center" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Organization"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/deep_blue" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="The Sovereign — archetypal order, structuring environments to manage chaos."
+                                android:textSize="12sp"
+                                android:textColor="#757575"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Daily Presence -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="🧘"
+                            android:textSize="22sp"
+                            android:gravity="center" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Daily Presence"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/deep_blue" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="The Mindful — grounded presence to manage cognitive overload and anxiety."
+                                android:textSize="12sp"
+                                android:textColor="#757575"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+
 
         <!-- Artistic Credits -->
         <TextView
@@ -161,6 +417,108 @@
                 android:text="• Language: Kotlin\n• Architecture: MVVM (Jetpack)\n• UI: Material Design 3\n• Navigation: Navigation Component"
                 android:textSize="13sp"
                 android:textColor="#616161" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Developers -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Developers"
+            android:textAllCaps="true"
+            android:textColor="@color/deep_blue"
+            android:textSize="12sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text="👩‍💻"
+                        android:textSize="22sp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="Tessa Esponilla"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/deep_blue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text="👨‍💻"
+                        android:textSize="22sp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="Angel Patrico"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/deep_blue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text="👨‍💻"
+                        android:textSize="22sp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="Jay Tuante"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/deep_blue" />
+                </LinearLayout>
+
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <TextView

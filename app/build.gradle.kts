@@ -11,7 +11,7 @@ android {
         applicationId = "com.herovault"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
+        versionCode = 3
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.cardview)
+
 
     
     testImplementation(libs.junit)

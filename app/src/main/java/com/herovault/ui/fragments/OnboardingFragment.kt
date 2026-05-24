@@ -28,105 +28,43 @@ class OnboardingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnDiscover.setOnClickListener {
-            // Question 1: Physical Energy (1=good, 3=poor)
-            val pScore = when(binding.rgPhysical.checkedRadioButtonId) {
-                binding.rbPhy3.id -> 3
-                binding.rbPhy2.id -> 2
-                binding.rbPhy1.id -> 1
-                else -> 0
+            val userName = binding.etUserName.text?.toString()?.trim()
+            
+            val p1 = getScore(binding.rgPhyEnergy.checkedRadioButtonId, binding.rbPhyE1.id, binding.rbPhyE2.id, binding.rbPhyE3.id)
+            val m1 = getScore(binding.rgMenFocus.checkedRadioButtonId, binding.rbMenF1.id, binding.rbMenF2.id, binding.rbMenF3.id)
+            val e1 = getScore(binding.rgEmoResp.checkedRadioButtonId, binding.rbEmoR1.id, binding.rbEmoR2.id, binding.rbEmoR3.id)
+            val s1 = getScore(binding.rgSocial.checkedRadioButtonId, binding.rbSoc1.id, binding.rbSoc2.id, binding.rbSoc3.id)
+            val slp = getScore(binding.rgSleep.checkedRadioButtonId, binding.rbSlp1.id, binding.rbSlp2.id, binding.rbSlp3.id)
+            val mot = getScore(binding.rgMotivation.checkedRadioButtonId, binding.rbMot1.id, binding.rbMot2.id, binding.rbMot3.id)
+            val act = getScore(binding.rgActivity.checkedRadioButtonId, binding.rbAct1.id, binding.rbAct2.id, binding.rbAct3.id)
+            val str = getScore(binding.rgStress.checkedRadioButtonId, binding.rbStr1.id, binding.rbStr2.id, binding.rbStr3.id)
+            val rou = getScore(binding.rgRoutine.checkedRadioButtonId, binding.rbRou1.id, binding.rbRou2.id, binding.rbRou3.id)
+            val car = getScore(binding.rgSelfCare.checkedRadioButtonId, binding.rbCar1.id, binding.rbCar2.id, binding.rbCar3.id)
+
+            if (userName.isNullOrEmpty()) {
+                Toast.makeText(context, "Please enter your name.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
-            // Question 2: Mental Focus (1=good, 3=poor)
-            val mScore = when(binding.rgMental.checkedRadioButtonId) {
-                binding.rbMen3.id -> 3
-                binding.rbMen2.id -> 2
-                binding.rbMen1.id -> 1
-                else -> 0
-            }
-
-            // Question 3: Emotional Response (1=calm, 3=overwhelmed)
-            val eScore = when(binding.rgEmotional.checkedRadioButtonId) {
-                binding.rbEmo3.id -> 3
-                binding.rbEmo2.id -> 2
-                binding.rbEmo1.id -> 1
-                else -> 0
-            }
-
-            // Question 4: Social Connection (1=energized, 3=draining)
-            val sScore = when(binding.rgSocial.checkedRadioButtonId) {
-                binding.rbSoc3.id -> 3
-                binding.rbSoc2.id -> 2
-                binding.rbSoc1.id -> 1
-                else -> 0
-            }
-
-            // Question 5: Sleep Quality (1=good, 3=poor)
-            val sleepScore = when(binding.rgSleep.checkedRadioButtonId) {
-                binding.rbSlp3.id -> 3
-                binding.rbSlp2.id -> 2
-                binding.rbSlp1.id -> 1
-                else -> 0
-            }
-
-            // Question 6: Motivation (1=high, 3=low)
-            val motScore = when(binding.rgMotivation.checkedRadioButtonId) {
-                binding.rbMot3.id -> 3
-                binding.rbMot2.id -> 2
-                binding.rbMot1.id -> 1
-                else -> 0
-            }
-
-            // Question 7: Physical Activity (1=regular, 3=rare)
-            val actScore = when(binding.rgActivity.checkedRadioButtonId) {
-                binding.rbAct3.id -> 3
-                binding.rbAct2.id -> 2
-                binding.rbAct1.id -> 1
-                else -> 0
-            }
-
-            // Question 8: Stress Management (1=good, 3=poor)
-            val stressScore = when(binding.rgStress.checkedRadioButtonId) {
-                binding.rbStr3.id -> 3
-                binding.rbStr2.id -> 2
-                binding.rbStr1.id -> 1
-                else -> 0
-            }
-
-            // Question 9: Routine Structure (1=structured, 3=flexible)
-            val routineScore = when(binding.rgRoutine.checkedRadioButtonId) {
-                binding.rbRou3.id -> 3
-                binding.rbRou2.id -> 2
-                binding.rbRou1.id -> 1
-                else -> 0
-            }
-
-            // Question 10: Self-Care Priority (1=high, 3=low)
-            val selfCareScore = when(binding.rgSelfCare.checkedRadioButtonId) {
-                binding.rbCar3.id -> 3
-                binding.rbCar2.id -> 2
-                binding.rbCar1.id -> 1
-                else -> 0
-            }
-
-            // Check if all 10 questions are answered
-            if (pScore == 0 || mScore == 0 || eScore == 0 || sScore == 0 ||
-                sleepScore == 0 || motScore == 0 || actScore == 0 || stressScore == 0 ||
-                routineScore == 0 || selfCareScore == 0) {
-                Toast.makeText(context, "Please answer all 10 questions to discover your hero.", Toast.LENGTH_LONG).show()
+            val scores = listOf(p1, m1, e1, s1, slp, mot, act, str, rou, car)
+            if (scores.any { it == 0 }) {
+                Toast.makeText(context, "Please answer all questions.", Toast.LENGTH_SHORT).show()
             } else {
-                viewModel.discoverHero(
-                    pScore = pScore,
-                    mScore = mScore,
-                    eScore = eScore,
-                    sScore = sScore,
-                    sleepScore = sleepScore,
-                    motScore = motScore,
-                    actScore = actScore,
-                    stressScore = stressScore,
-                    routineScore = routineScore,
-                    selfCareScore = selfCareScore
-                )
+                viewModel.saveUserName(userName)
+                viewModel.discoverHero(p1, m1, e1, s1, slp, mot, act, str, rou, car)
+                parentFragmentManager.beginTransaction()
+                    .replace(com.herovault.R.id.fragment_container, DiscoveryResultFragment())
+                    .commit()
             }
+        }
+    }
+
+    private fun getScore(checkedId: Int, id1: Int, id2: Int, id3: Int): Int {
+        return when (checkedId) {
+            id1 -> 1
+            id2 -> 2
+            id3 -> 3
+            else -> 0
         }
     }
 

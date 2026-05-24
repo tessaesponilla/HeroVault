@@ -6,10 +6,7 @@ import com.herovault.R
 
 class SoundManager(private val context: Context) {
 
-    /**
-     * Professional sound effects for game-like feel.
-     * Note: You will need to place .mp3 files in res/raw folder.
-     */
+
     fun playClick() {
         playSound(R.raw.click_sound)
     }

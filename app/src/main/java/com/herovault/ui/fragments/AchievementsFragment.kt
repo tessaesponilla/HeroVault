@@ -58,162 +58,53 @@ class AchievementsFragment : Fragment() {
     private fun updateAchievements(hero: com.herovault.model.Hero) {
         binding.achievementsContainer.removeAllViews()
 
-        // Get data for current hero
-        val completedQuests = hero.quests.filter { viewModel.isQuestCompleted(it.id) }
+        // Use permanent tracking for achievements
+        val completedQuests = hero.quests.filter { viewModel.hasEverCompletedQuest(it.id) }
         val claimedLoot = hero.lootTable.filter { viewModel.isLootClaimed(it.id) }
         val completedQuestsCount = completedQuests.size
         val claimedLootCount = claimedLoot.size
 
-        // ===== RANK ACHIEVEMENTS (Based on Level) =====
+        // ✅ Fix progress bars
+        val totalQuests = hero.quests.size
+        val totalLoot = hero.lootTable.size
+
+        binding.textQuestProgress.text = "$completedQuestsCount/$totalQuests"
+        binding.progressQuests.max = totalQuests
+        binding.progressQuests.progress = completedQuestsCount
+
+        binding.textLootProgress.text = "$claimedLootCount/$totalLoot"
+        binding.progressLoot.max = totalLoot
+        binding.progressLoot.progress = claimedLootCount
+
+        val totalItems = totalQuests + totalLoot
+        val completedItems = completedQuestsCount + claimedLootCount
+        binding.progressOverall.max = if (totalItems > 0) totalItems else 1
+        binding.progressOverall.progress = completedItems
+
+        // ===== RANK ACHIEVEMENTS =====
         addSectionHeader("🏆 Rank Achievements")
-
-        // Novice - Level 1 (always unlocked)
-        addAchievementCard(
-            title = "Novice",
-            description = "Reach Level 1",
-            icon = "🌟",
-            isUnlocked = hero.level >= 1,
-            requirement = 1,
-            currentValue = hero.level
-        )
-
-        // Intermediate - Level 5
-        addAchievementCard(
-            title = "Intermediate",
-            description = "Reach Level 5",
-            icon = "⭐",
-            isUnlocked = hero.level >= 5,
-            requirement = 5,
-            currentValue = hero.level
-        )
-
-        // Advanced - Level 10
-        addAchievementCard(
-            title = "Advanced",
-            description = "Reach Level 10",
-            icon = "💫",
-            isUnlocked = hero.level >= 10,
-            requirement = 10,
-            currentValue = hero.level
-        )
-
-        // Adept - Level 15
-        addAchievementCard(
-            title = "Adept",
-            description = "Reach Level 15",
-            icon = "✨",
-            isUnlocked = hero.level >= 15,
-            requirement = 15,
-            currentValue = hero.level
-        )
-
-        // Excellent - Level 20
-        addAchievementCard(
-            title = "Excellent",
-            description = "Reach Level 20",
-            icon = "👑",
-            isUnlocked = hero.level >= 20,
-            requirement = 20,
-            currentValue = hero.level
-        )
+        addAchievementCard("Novice", "Reach Level 1", "🌟", hero.level >= 1, 1, hero.level)
+        addAchievementCard("Intermediate", "Reach Level 5", "⭐", hero.level >= 5, 5, hero.level)
+        addAchievementCard("Advanced", "Reach Level 10", "💫", hero.level >= 10, 10, hero.level)
+        addAchievementCard("Adept", "Reach Level 15", "✨", hero.level >= 15, 15, hero.level)
+        addAchievementCard("Excellent", "Reach Level 20", "👑", hero.level >= 20, 20, hero.level)
 
         // ===== QUEST ACHIEVEMENTS =====
         addSectionHeader("📜 Quest Achievements")
-
-        // Quest Novice - 5 quests
-        addAchievementCard(
-            title = "Quest Novice",
-            description = "Complete 5 quests",
-            icon = "📖",
-            isUnlocked = completedQuestsCount >= 5,
-            requirement = 5,
-            currentValue = completedQuestsCount
-        )
-
-        // Quest Adept - 10 quests
-        addAchievementCard(
-            title = "Quest Adept",
-            description = "Complete 10 quests",
-            icon = "📚",
-            isUnlocked = completedQuestsCount >= 10,
-            requirement = 10,
-            currentValue = completedQuestsCount
-        )
-
-        // Quest Master - 20 quests
-        addAchievementCard(
-            title = "Quest Master",
-            description = "Complete 20 quests",
-            icon = "🏅",
-            isUnlocked = completedQuestsCount >= 20,
-            requirement = 20,
-            currentValue = completedQuestsCount
-        )
-
-        // Quest Legend - 30 quests
-        addAchievementCard(
-            title = "Quest Legend",
-            description = "Complete 30 quests",
-            icon = "🏆",
-            isUnlocked = completedQuestsCount >= 30,
-            requirement = 30,
-            currentValue = completedQuestsCount
-        )
+        addAchievementCard("Quest Novice", "Complete 5 quests", "📖", completedQuestsCount >= 5, 5, completedQuestsCount)
+        addAchievementCard("Quest Adept", "Complete 10 quests", "📚", completedQuestsCount >= 10, 10, completedQuestsCount)
+        addAchievementCard("Quest Master", "Complete 20 quests", "🏅", completedQuestsCount >= 20, 20, completedQuestsCount)
+        addAchievementCard("Quest Legend", "Complete 30 quests", "🏆", completedQuestsCount >= 30, 30, completedQuestsCount)
 
         // ===== LOOT ACHIEVEMENTS =====
         addSectionHeader("💎 Loot Achievements")
+        addAchievementCard("Loot Collector", "Claim 5 loot items", "🔑", claimedLootCount >= 5, 5, claimedLootCount)
+        addAchievementCard("Loot Hoarder", "Claim 10 loot items", "💰", claimedLootCount >= 10, 10, claimedLootCount)
+        addAchievementCard("Loot Enthusiast", "Claim 20 loot items", "💎", claimedLootCount >= 20, 20, claimedLootCount)
+        addAchievementCard("Loot Master", "Claim 30 loot items", "👑", claimedLootCount >= 30, 30, claimedLootCount)
+        addAchievementCard("Loot Legend", "Claim 40 loot items", "🏆", claimedLootCount >= 40, 40, claimedLootCount)
 
-        // Loot Collector - 5 loots
-        addAchievementCard(
-            title = "Loot Collector",
-            description = "Claim 5 loot items",
-            icon = "🔑",
-            isUnlocked = claimedLootCount >= 5,
-            requirement = 5,
-            currentValue = claimedLootCount
-        )
-
-        // Loot Hoarder - 10 loots
-        addAchievementCard(
-            title = "Loot Hoarder",
-            description = "Claim 10 loot items",
-            icon = "💰",
-            isUnlocked = claimedLootCount >= 10,
-            requirement = 10,
-            currentValue = claimedLootCount
-        )
-
-        // Loot Enthusiast - 20 loots
-        addAchievementCard(
-            title = "Loot Enthusiast",
-            description = "Claim 20 loot items",
-            icon = "💎",
-            isUnlocked = claimedLootCount >= 20,
-            requirement = 20,
-            currentValue = claimedLootCount
-        )
-
-        // Loot Master - 30 loots
-        addAchievementCard(
-            title = "Loot Master",
-            description = "Claim 30 loot items",
-            icon = "👑",
-            isUnlocked = claimedLootCount >= 30,
-            requirement = 30,
-            currentValue = claimedLootCount
-        )
-
-        // Loot Legend - 40 loots
-        addAchievementCard(
-            title = "Loot Legend",
-            description = "Claim 40 loot items",
-            icon = "🏆",
-            isUnlocked = claimedLootCount >= 40,
-            requirement = 40,
-            currentValue = claimedLootCount
-        )
-
-        // ===== Completed Quests Section (Actual earned) =====
+        // ===== COMPLETED QUESTS (Ever done) =====
         if (completedQuests.isNotEmpty()) {
             addSectionHeader("✓ Completed Quests")
             completedQuests.forEach { quest ->
@@ -227,7 +118,7 @@ class AchievementsFragment : Fragment() {
             }
         }
 
-        // ===== Claimed Loot Section (Actual earned) =====
+        // ===== CLAIMED LOOT =====
         if (claimedLoot.isNotEmpty()) {
             addSectionHeader("📦 Claimed Loot")
             claimedLoot.forEach { loot ->
@@ -241,7 +132,6 @@ class AchievementsFragment : Fragment() {
             }
         }
     }
-
     private fun addSectionHeader(title: String) {
         val header = TextView(requireContext()).apply {
             text = title
