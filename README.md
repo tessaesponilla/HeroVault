@@ -8,7 +8,7 @@ HeroVault transforms personal wellness into an adventure. Users discover their h
 
 ## Features
 
-### 🎮 Gamified Wellness System
+### Gamified Wellness System
 - **HP (Health Points)** - Physical & emotional resilience
 - **MP (Mana Points)** - Cognitive & psychological capacity  
 - **XP & Leveling** - Progress tracking and achievement rewards
@@ -20,7 +20,7 @@ HeroVault transforms personal wellness into an adventure. Users discover their h
 - **Loot System** - Symbolic items representing self-care practices
 - **Hero Skills** - Unique abilities tailored to each archetype
 
-### 🦸 Six Hero Archetypes
+### Six Hero Archetypes
 
 Discover which hero resonates with you:
 
