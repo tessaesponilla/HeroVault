@@ -20,18 +20,6 @@ HeroVault transforms personal wellness into an adventure. Users discover their h
 - **Loot System** - Symbolic items representing self-care practices
 - **Hero Skills** - Unique abilities tailored to each archetype
 
-### Six Hero Archetypes
-
-Discover which hero resonates with you:
-
-Archetype:
-- **Guardian** 
--**Balanced**
-- **Sage**
-- **Sovereign**
--**Empath**
--**Mindful**
-
 
 ## Developers:
 -Tessa Esponilla
