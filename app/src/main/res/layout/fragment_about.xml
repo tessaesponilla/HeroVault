@@ -30,11 +30,12 @@
                 android:orientation="vertical"
                 android:padding="32dp">
 
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="⚔️"
-                    android:textSize="64sp" />
+                    android:src="@drawable/startimg"
+                    android:contentDescription="Start image" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -47,7 +48,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Your Wellness Companion | v1.0.4"
+                    android:text="Your Wellness Companion | v1.0.5"
                     android:textColor="#757575"
                     android:textSize="14sp" />
             </LinearLayout>
