@@ -54,7 +54,7 @@ class StatsFragment : Fragment() {
                 binding.textRank.text = h.getEvolutionTitle()
                 binding.textLevelNumber.text = "${h.level}"
 
-                // Clinical Insight Logic (Addressing Professor's Suggestion)
+                // Clinical Insight Logic
                 binding.textClinicalInsight.text = viewModel.getPsychologicalInsight()
 
                 // Display Today's Mood if set
