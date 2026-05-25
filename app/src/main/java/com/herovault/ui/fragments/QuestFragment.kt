@@ -20,6 +20,8 @@ import com.herovault.ui.SoundManager
 import com.herovault.viewmodel.HeroViewModel
 import java.io.File
 import java.io.FileOutputStream
+import android.app.AlertDialog
+import android.widget.EditText
 
 class QuestFragment : Fragment() {
 
@@ -42,11 +44,6 @@ class QuestFragment : Fragment() {
     private val pickAudioLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let { handleProofUri(it, ProofType.AUDIO) }
             ?: Toast.makeText(context, "No audio selected.", Toast.LENGTH_SHORT).show()
-    }
-
-    private val pickTextLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let { handleProofUri(it, ProofType.TEXT) }
-            ?: Toast.makeText(context, "No file selected.", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateView(
@@ -220,9 +217,41 @@ class QuestFragment : Fragment() {
                     ProofType.IMAGE -> pickImageLauncher.launch("image/*")
                     ProofType.VIDEO -> pickVideoLauncher.launch("video/*")
                     ProofType.AUDIO -> pickAudioLauncher.launch("audio/*")
-                    ProofType.TEXT  -> pickTextLauncher.launch("text/plain")
+                    ProofType.TEXT -> showTextInputDialog(quest)
                 }
             }
+        }
+    }
+
+    private fun showTextInputDialog(quest: Quest) {
+        val input = EditText(requireContext()).apply {
+            hint = "Write your proof here..."
+            minLines = 3
+            setPadding(48, 32, 48, 32)
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Text Proof")
+            .setView(input)
+            .setPositiveButton("Submit") { _, _ ->
+                val text = input.text.toString()
+                val savedPath = saveTextToInternalStorage(text)
+                if (savedPath != null) {
+                    verifyTextProof(quest, savedPath)
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun saveTextToInternalStorage(text: String): String? {
+        return try {
+            val file = File(requireContext().filesDir,
+                "proof_${System.currentTimeMillis()}.txt")
+            file.writeText(text)
+            file.absolutePath
+        } catch (e: Exception) {
+            null
         }
     }
 
